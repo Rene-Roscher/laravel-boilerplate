@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Settings\BrowserSessionController;
+use App\Http\Controllers\Settings\OtherBrowserSessionsController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -20,5 +22,12 @@ Route::middleware('auth')->group(function () {
         'isSetup' => fn() => auth()->user()->two_factor_pending,
     ])->name('user.two-factor-authentication.edit');
 
-    Route::inertia('settings/appearance', 'settings/Appearance')->name('appearance');
+    Route::inertia('settings/appearance', 'settings/Appearance')->name('user.appearance.edit');
+
+    Route::get('user/browser-sessions', [BrowserSessionController::class, 'index'])
+        ->name('user.browser-sessions.index');
+
+    Route::delete('user/other-browser-sessions', [OtherBrowserSessionsController::class, 'destroy'])
+        ->middleware('password.confirm')
+        ->name('user.other-browser-sessions.destroy');
 });

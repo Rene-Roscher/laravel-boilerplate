@@ -17,6 +17,7 @@ interface Props {
     content: string;
     button: string;
     bypass: boolean;
+    emitPassword: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,6 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
     content: 'For your security, please confirm your password to continue.',
     button: 'Confirm',
     bypass: false,
+    emitPassword: false,
 });
 
 const confirmingPassword = ref<boolean>(false);
@@ -43,7 +45,7 @@ const startConfirmingPassword = () => {
     }
 
     axios.get(route('password.confirmation')).then((response) => {
-        if (response.data.confirmed) {
+        if (response.data.confirmed && !props.emitPassword) {
             emit('confirmed');
         } else {
             confirmingPassword.value = true;
@@ -63,11 +65,9 @@ const confirmPassword = () => {
         .then(async () => {
             form.processing = false;
 
+            emit('confirmed', props.emitPassword ? form.password : null);
+
             closeModal();
-
-            await nextTick();
-
-            emit('confirmed');
         })
         .catch((error) => {
             form.processing = false;

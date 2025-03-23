@@ -8,19 +8,23 @@ import { Link, usePage } from '@inertiajs/vue3';
 const sidebarNavItems: NavItem[] = [
     {
         title: 'Profile',
-        href: '/settings/profile',
+        href: route('user.profile.edit'),
     },
     {
         title: 'Password',
-        href: '/settings/password',
+        href: route('user.password.edit'),
     },
     {
         title: 'Appearance',
-        href: '/settings/appearance',
+        href: route('user.appearance.edit'),
     },
     {
         title: 'Two-Factor Authentication',
-        href: '/settings/two-factor-authentication',
+        href: route('user.two-factor-authentication.edit'),
+    },
+    {
+        title: 'Browser Sessions',
+        href: route('user.browser-sessions.index'),
     },
 ];
 
