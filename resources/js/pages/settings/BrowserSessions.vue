@@ -3,6 +3,7 @@ import HeadingSmall from '@/components/HeadingSmall.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import XConfirmsPassword from '@/components/XConfirmsPassword.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -90,17 +91,16 @@ const logoutOtherBrowserSessions = (password: string) => {
                         </div>
 
                         <div class="ms-3">
-                            <div class="text-sm text-gray-600 dark:text-gray-400">
+                            <div class="text-sm text-accent-foreground">
                                 {{ session.agent.platform ? session.agent.platform : 'Unknown' }} -
                                 {{ session.agent.browser ? session.agent.browser : 'Unknown' }}
                             </div>
 
                             <div>
-                                <div class="text-xs text-gray-500">
-                                    {{ session.ip_address }},
-
-                                    <span v-if="session.is_current_device" class="font-semibold text-green-500">This device</span>
-                                    <span v-else>Last active {{ session.last_active }}</span>
+                                <div class="text-xs text-muted-foreground">
+                                    {{ session.ip_address }}
+                                    <badge v-if="session.is_current_device" variant="green" size="sm" class="ml-0.5">This device</badge>
+                                    <span v-else>, Last active {{ session.last_active }}</span>
                                 </div>
                             </div>
                         </div>
