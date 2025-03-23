@@ -9,10 +9,11 @@ export default {
                 let modules;
                 switch (lang) {
                     case 'en':
-                        modules = import.meta.glob('../../../lang/json/en/*.json', { eager: true });
+                        modules = import.meta.glob('../../../lang/json/en/**/*.json', { eager: true });
+                        console.log(modules)
                         break;
                     case 'de':
-                        modules = import.meta.glob('../../../lang/json/de/*.json', { eager: true });
+                        modules = import.meta.glob('../../../lang/json/de/**/*.json', { eager: true });
                         break;
                 }
 
@@ -22,7 +23,7 @@ export default {
                     const regex = new RegExp(`../lang/json/${lang}/(.+)\\.json$`);
                     const match = path.match(regex);
                     if (match) {
-                        const prefix = match[1];
+                        const prefix = match[1].replaceAll('/', '.');
                         const moduleMessages = modules[path].default;
                         for (const key in moduleMessages) {
                             messages.default[`${prefix}.${key}`] = moduleMessages[key];
