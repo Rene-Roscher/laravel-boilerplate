@@ -28,7 +28,7 @@ const form = useForm({
 const deleteUser = (e: Event) => {
     e.preventDefault();
 
-    form.delete(route('profile.destroy'), {
+    form.delete(route('user.profile.destroy'), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onError: () => passwordInput.value?.focus(),

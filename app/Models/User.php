@@ -2,15 +2,21 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\Fortify;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class User extends Authenticatable
+/**
+ * @mixin IdeHelperUser
+ */
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +27,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
+        'two_factor_confirmed_at'
     ];
 
     /**
@@ -29,8 +38,14 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
+        'password',
+        'two_factor_secret',
+        'two_factor_recovery_codes'
+    ];
+
+    protected $appends = [
+        'two_factor_enabled', 'two_factor_pending'
     ];
 
     /**
@@ -42,7 +57,23 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'two_factor_confirmed_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
+
+    public function twoFactorEnabled(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => ! is_null($this->two_factor_secret)
+        );
+    }
+
+    public function twoFactorPending(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => Fortify::confirmsTwoFactorAuthentication() && ! is_null($this->two_factor_secret) && is_null($this->two_factor_confirmed_at)
+        );
+    }
+
 }
