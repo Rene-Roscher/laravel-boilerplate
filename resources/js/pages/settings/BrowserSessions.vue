@@ -34,7 +34,7 @@ interface Props {
 defineProps<Props>();
 
 const logoutOtherBrowserSessions = (password: string) => {
-  console.log(password);
+    console.log(password);
     router.delete(route('user.other-browser-sessions.destroy'), {
         preserveScroll: true,
         data: {
