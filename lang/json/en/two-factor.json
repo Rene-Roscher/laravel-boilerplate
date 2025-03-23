@@ -1,0 +1,21 @@
+{
+    "twoFactorAuthentication": "Two-Factor Authentication",
+    "twoFactorAuthenticationDescription": "Add additional security to your account using two factor authentication.",
+    "status": "Status",
+    "enabled": "You have enabled two factor authentication.",
+    "finishEnabling": "Finish enabling two factor authentication.",
+    "notEnabled": "You have not enabled two factor authentication.",
+    "whenEnabled": "When two factor authentication is enabled, you will be prompted for a secure, random token during authentication.",
+    "googleAuthenticator": "You may retrieve this token from your phone's Google Authenticator application.",
+    "scanQrCode": "To finish enabling two factor authentication, scan the following QR code using your phone's authenticator application or enter the setup key and provide the generated OTP code.",
+    "enabledNow": "Two factor authentication is now enabled. Scan the following QR code using your phone's authenticator application or enter the setup key.",
+    "setupKey": "Setup Key: ",
+    "recoveryCodes": "Recovery Codes",
+    "recoveryCodesDescription": "Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.",
+    "enable": "Enable",
+    "confirm": "Confirm",
+    "regenerateRecoveryCodes": "Regenerate Recovery Codes",
+    "showRecoveryCodes": "Show Recovery Codes",
+    "cancel": "Cancel",
+    "disable": "Disable"
+}

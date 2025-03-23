@@ -92,17 +92,17 @@ const closeModal = () => {
             <DialogContent>
                 <div class="space-y-6">
                     <DialogHeader class="space-y-3">
-                        <DialogTitle>{{ title }}</DialogTitle>
-                        <DialogDescription>{{ content }}</DialogDescription>
+                        <DialogTitle>{{ __('confirms-password.confirmPassword') }}</DialogTitle>
+                        <DialogDescription>{{ __('confirms-password.confirmPasswordContent') }}</DialogDescription>
                     </DialogHeader>
 
                     <div class="grid gap-2">
-                        <Label for="password" class="sr-only">Password</Label>
+                        <Label for="password" class="sr-only">{{ __('confirms-password.password') }}</Label>
                         <Input
                             ref="passwordInput"
                             v-model="form.password"
                             type="password"
-                            placeholder="Password"
+                            :placeholder="__('confirms-password.password')"
                             autocomplete="current-password"
                             @keyup.enter="confirmPassword"
                         />
@@ -111,11 +111,11 @@ const closeModal = () => {
 
                     <DialogFooter class="gap-2">
                         <DialogClose as-child>
-                            <Button variant="secondary" @click="closeModal"> Cancel</Button>
+                            <Button variant="secondary" @click="closeModal">{{ __('confirms-password.cancel') }}</Button>
                         </DialogClose>
 
                         <Button variant="default" :disabled="form.processing" @click="confirmPassword">
-                            <button type="submit">{{ button }}</button>
+                            {{ __('confirms-password.confirm') }}
                         </Button>
                     </DialogFooter>
                 </div>

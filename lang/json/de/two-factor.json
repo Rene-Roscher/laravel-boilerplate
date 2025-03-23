@@ -1,0 +1,21 @@
+{
+    "twoFactorAuthentication": "Zwei-Faktor-Authentifizierung",
+    "twoFactorAuthenticationDescription": "Füge zusätzliche Sicherheit zu deinem Konto mit Zwei-Faktor-Authentifizierung hinzu.",
+    "status": "Status",
+    "enabled": "Du hast die Zwei-Faktor-Authentifizierung aktiviert.",
+    "finishEnabling": "Beende die Aktivierung der Zwei-Faktor-Authentifizierung.",
+    "notEnabled": "Du hast die Zwei-Faktor-Authentifizierung nicht aktiviert.",
+    "whenEnabled": "Wenn die Zwei-Faktor-Authentifizierung aktiviert ist, wirst du während der Authentifizierung nach einem sicheren, zufällig generierten Token gefragt.",
+    "googleAuthenticator": "Du kannst dieses Token in der Google Authenticator App auf deinem Telefon abrufen.",
+    "scanQrCode": "Um die Zwei-Faktor-Authentifizierung abzuschließen, scanne den folgenden QR-Code mit der Authenticator-App auf deinem Telefon oder gib den Setup-Schlüssel ein und gib den generierten OTP-Code ein.",
+    "enabledNow": "Die Zwei-Faktor-Authentifizierung ist jetzt aktiviert. Scanne den folgenden QR-Code mit der Authenticator-App auf deinem Telefon oder gib den Setup-Schlüssel ein.",
+    "setupKey": "Setup-Schlüssel: ",
+    "recoveryCodes": "Wiederherstellungscodes",
+    "recoveryCodesDescription": "Speichere diese Wiederherstellungscodes in einem sicheren Passwortmanager. Sie können verwendet werden, um den Zugang zu deinem Konto wiederherzustellen, falls dein Zwei-Faktor-Authentifizierungsgerät verloren geht.",
+    "enable": "Aktivieren",
+    "confirm": "Bestätigen",
+    "regenerateRecoveryCodes": "Wiederherstellungscodes regenerieren",
+    "showRecoveryCodes": "Wiederherstellungscodes anzeigen",
+    "cancel": "Abbrechen",
+    "disable": "Deaktivieren"
+}

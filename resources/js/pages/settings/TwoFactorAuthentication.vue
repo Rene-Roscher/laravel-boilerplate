@@ -131,29 +131,28 @@ const disableTwoFactorAuthentication = () => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Password settings" />
+        <Head :title="__('two-factor.twoFactorAuthentication')" />
 
         <SettingsLayout>
             <div class="space-y-6">
                 <HeadingSmall
-                    title="Two Factor Authentication"
-                    description="Add additional security to your account using two factor authentication."
+                    :title="__('two-factor.twoFactorAuthentication')"
+                    :description="__('two-factor.twoFactorAuthenticationDescription')"
                 />
 
                 <HeadingSmall
                     v-if="twoFactorEnabled"
-                    title="Status"
+                    :title="__('two-factor.status')"
                     :description="
-                        twoFactorEnabled && !confirming ? 'You have enabled two factor authentication.' : 'Finish enabling two factor authentication.'
+                        twoFactorEnabled && !confirming ? __('two-factor.enabled') : __('two-factor.finishEnabling')
                     "
                 />
 
-                <HeadingSmall v-else title="Status" description="You have not enabled two factor authentication." />
+                <HeadingSmall v-else :title="__('two-factor.status')" :description="__('two-factor.notEnabled')" />
 
                 <div class="text-sm text-muted-foreground">
                     <p>
-                        When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may
-                        retrieve this token from your phone's Google Authenticator application.
+                        {{ __('two-factor.whenEnabled') }} {{ __('two-factor.googleAuthenticator') }}
                     </p>
                 </div>
 
@@ -161,24 +160,22 @@ const disableTwoFactorAuthentication = () => {
                     <div v-if="qrCode">
                         <div class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
                             <p v-if="confirming" class="font-medium text-muted-foreground">
-                                To finish enabling two factor authentication, scan the following QR code using your phone's authenticator application
-                                or enter the setup key and provide the generated OTP code.
+                                {{ __('two-factor.scanQrCode') }}
                             </p>
 
                             <p v-else>
-                                Two factor authentication is now enabled. Scan the following QR code using your phone's authenticator application or
-                                enter the setup key.
+                                {{ __('two-factor.enabledNow') }}
                             </p>
                         </div>
 
                         <div class="mt-4 inline-block rounded-lg bg-white p-2" v-html="qrCode" />
 
                         <div v-if="setupKey" class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                            <p class="font-semibold">Setup Key: <span v-html="setupKey"></span></p>
+                            <p class="font-semibold">{{ __('two-factor.setupKey') }} <span v-html="setupKey"></span></p>
                         </div>
 
                         <div v-if="confirming" class="mt-4">
-                            <Label htmlFor="code" value="Code" />
+                            <Label htmlFor="code" :value="__('two-factor.Code')" />
 
                             <PinInput id="pin-input" v-model="confirmationForm.code" placeholder="○" otp type="number">
                                 <PinInputGroup>
@@ -192,8 +189,8 @@ const disableTwoFactorAuthentication = () => {
 
                     <div v-if="recoveryCodes.length > 0 && !confirming">
                         <HeadingSmall
-                            title="Recovery Codes"
-                            description="Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost."
+                            :title="__('two-factor.recoveryCodes')"
+                            :description="__('two-factor.recoveryCodesDescription')"
                         />
 
                         <div class="mt-4 grid max-w-xl gap-1 rounded-lg bg-accent bg-gray-100 px-4 py-4 font-mono text-sm dark:text-gray-100">
@@ -207,7 +204,7 @@ const disableTwoFactorAuthentication = () => {
                 <div class="mt-5">
                     <div v-if="!twoFactorEnabled">
                         <XConfirmsPassword @confirmed="enableTwoFactorAuthentication" :bypass="!confirmPassword">
-                            <Button :class="{ 'opacity-25': enabling }" :disabled="enabling"> Enable</Button>
+                            <Button :class="{ 'opacity-25': enabling }" :disabled="enabling">{{ __('two-factor.enable') }}</Button>
                         </XConfirmsPassword>
                     </div>
 
@@ -221,27 +218,31 @@ const disableTwoFactorAuthentication = () => {
                                 :class="{ 'opacity-25': enabling }"
                                 :disabled="enabling"
                             >
-                                Confirm
+                                {{ __('two-factor.confirm') }}
                             </Button>
                         </XConfirmsPassword>
 
                         <XConfirmsPassword @confirmed="regenerateRecoveryCodes" :bypass="!confirmPassword">
                             <Button variant="secondary" v-if="recoveryCodes.length > 0 && !confirming" class="me-3">
-                                Regenerate Recovery Codes
+                                {{ __('two-factor.regenerateRecoveryCodes') }}
                             </Button>
                         </XConfirmsPassword>
 
                         <XConfirmsPassword @confirmed="showRecoveryCodes" :bypass="!confirmPassword">
-                            <Button variant="secondary" v-if="recoveryCodes.length === 0 && !confirming" class="me-3"> Show Recovery Codes </Button>
+                            <Button variant="secondary" v-if="recoveryCodes.length === 0 && !confirming" class="me-3">
+                                {{ __('two-factor.showRecoveryCodes') }}
+                            </Button>
                         </XConfirmsPassword>
 
                         <XConfirmsPassword @confirmed="disableTwoFactorAuthentication" :bypass="!confirmPassword">
-                            <Button variant="secondary" v-if="confirming" :class="{ 'opacity-25': disabling }" :disabled="disabling"> Cancel </Button>
+                            <Button variant="secondary" v-if="confirming" :class="{ 'opacity-25': disabling }" :disabled="disabling">
+                                {{ __('two-factor.cancel') }}
+                            </Button>
                         </XConfirmsPassword>
 
                         <XConfirmsPassword @confirmed="disableTwoFactorAuthentication" :bypass="!confirmPassword">
                             <Button variant="destructive" v-if="!confirming" :class="{ 'opacity-25': disabling }" :disabled="disabling">
-                                Disable
+                                {{ __('two-factor.disable') }}
                             </Button>
                         </XConfirmsPassword>
                     </div>
@@ -250,3 +251,4 @@ const disableTwoFactorAuthentication = () => {
         </SettingsLayout>
     </AppLayout>
 </template>
+
