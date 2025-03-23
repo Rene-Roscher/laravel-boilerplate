@@ -8,6 +8,9 @@ import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
 import { initializeTheme } from './composables/useAppearance';
+import {createPinia} from "pinia";
+
+const pinia = createPinia()
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -20,6 +23,7 @@ createInertiaApp({
             .use(ZiggyVue)
             .use(axios)
             .use(i18n)
+            .use(pinia)
             .mount(el);
     },
     progress: {
