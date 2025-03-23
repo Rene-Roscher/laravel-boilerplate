@@ -9,6 +9,7 @@ use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -53,6 +54,7 @@ class FortifyServiceProvider extends ServiceProvider
                 : Inertia::render('auth/VerifyEmail', ['status' => $request->session()->get('status')]);
         });
         Fortify::twoFactorChallengeView(fn() => Inertia::render('auth/TwoFactorChallenge'));
+        Fortify::confirmPasswordView(fn() => Redirect::to(route('user.password.edit')));
 
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
