@@ -4,8 +4,6 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -36,15 +34,15 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         /** Views */
-        Fortify::loginView(fn(Request $request) => Inertia::render('auth/Login', [
+        Fortify::loginView(fn (Request $request) => Inertia::render('auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => $request->session()->get('status'),
         ]));
-        Fortify::registerView(fn() => Inertia::render('auth/Register'));
-        Fortify::requestPasswordResetLinkView(fn(Request $request) => Inertia::render('auth/ForgotPassword', [
-            'status' => $request->session()->get('status')
+        Fortify::registerView(fn () => Inertia::render('auth/Register'));
+        Fortify::requestPasswordResetLinkView(fn (Request $request) => Inertia::render('auth/ForgotPassword', [
+            'status' => $request->session()->get('status'),
         ]));
-        Fortify::resetPasswordView(fn(Request $request) => Inertia::render('auth/ResetPassword', [
+        Fortify::resetPasswordView(fn (Request $request) => Inertia::render('auth/ResetPassword', [
             'email' => $request->input('email'),
             'token' => $request->route('token'),
         ]));
@@ -53,11 +51,11 @@ class FortifyServiceProvider extends ServiceProvider
                 ? redirect()->intended(route('dashboard', absolute: false))
                 : Inertia::render('auth/VerifyEmail', ['status' => $request->session()->get('status')]);
         });
-        Fortify::twoFactorChallengeView(fn() => Inertia::render('auth/TwoFactorChallenge'));
-        Fortify::confirmPasswordView(fn() => Redirect::to(route('user.password.edit')));
+        Fortify::twoFactorChallengeView(fn () => Inertia::render('auth/TwoFactorChallenge'));
+        Fortify::confirmPasswordView(fn () => Redirect::to(route('user.password.edit')));
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

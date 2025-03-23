@@ -29,7 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'two_factor_secret',
         'two_factor_recovery_codes',
-        'two_factor_confirmed_at'
+        'two_factor_confirmed_at',
     ];
 
     /**
@@ -41,11 +41,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
         'password',
         'two_factor_secret',
-        'two_factor_recovery_codes'
+        'two_factor_recovery_codes',
     ];
 
     protected $appends = [
-        'two_factor_enabled', 'two_factor_pending'
+        'two_factor_enabled', 'two_factor_pending',
     ];
 
     /**
@@ -65,15 +65,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function twoFactorEnabled(): Attribute
     {
         return Attribute::make(
-            get: fn() => ! is_null($this->two_factor_secret)
+            get: fn () => ! is_null($this->two_factor_secret)
         );
     }
 
     public function twoFactorPending(): Attribute
     {
         return Attribute::make(
-            get: fn() => Fortify::confirmsTwoFactorAuthentication() && ! is_null($this->two_factor_secret) && is_null($this->two_factor_confirmed_at)
+            get: fn () => Fortify::confirmsTwoFactorAuthentication() && ! is_null($this->two_factor_secret) && is_null($this->two_factor_confirmed_at)
         );
     }
-
 }

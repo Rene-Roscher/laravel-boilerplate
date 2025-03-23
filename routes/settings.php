@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::inertia('settings/two-factor-authentication', 'settings/TwoFactorAuthentication', [
         'requiresConfirmation' => config('fortify-options.two-factor-authentication')['confirm'] ?? true,
         'confirmPassword' => config('fortify-options.two-factor-authentication')['confirmPassword'] ?? true,
-        'isSetup' => fn() => auth()->user()->two_factor_pending,
+        'isSetup' => fn () => auth()->user()->two_factor_pending,
     ])->name('user.two-factor-authentication.edit');
 
     Route::inertia('settings/appearance', 'settings/Appearance')->name('user.appearance.edit');

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Services\UserAgent;
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -13,7 +12,6 @@ use Inertia\Response;
 
 class BrowserSessionController extends Controller
 {
-
     public function index(Request $request): Response
     {
         return Inertia::render('settings/BrowserSessions', [
@@ -59,5 +57,4 @@ class BrowserSessionController extends Controller
     {
         return tap(new UserAgent, fn ($agent) => $agent->setUserAgent($session->user_agent));
     }
-
 }
