@@ -92,17 +92,17 @@ const closeModal = () => {
             <DialogContent>
                 <div class="space-y-6">
                     <DialogHeader class="space-y-3">
-                        <DialogTitle>{{ __('confirms-password.confirmPassword') }}</DialogTitle>
-                        <DialogDescription>{{ __('confirms-password.confirmPasswordContent') }}</DialogDescription>
+                        <DialogTitle>{{ __('features.confirms-password.confirmPassword') }}</DialogTitle>
+                        <DialogDescription>{{ __('features.confirms-password.confirmPasswordContent') }}</DialogDescription>
                     </DialogHeader>
 
                     <div class="grid gap-2">
-                        <Label for="password" class="sr-only">{{ __('confirms-password.password') }}</Label>
+                        <Label for="password" class="sr-only">{{ __('features.confirms-password.password') }}</Label>
                         <Input
                             ref="passwordInput"
                             v-model="form.password"
                             type="password"
-                            :placeholder="__('confirms-password.password')"
+                            :placeholder="__('features.confirms-password.password')"
                             autocomplete="current-password"
                             @keyup.enter="confirmPassword"
                         />
@@ -111,11 +111,11 @@ const closeModal = () => {
 
                     <DialogFooter class="gap-2">
                         <DialogClose as-child>
-                            <Button variant="secondary" @click="closeModal">{{ __('confirms-password.cancel') }}</Button>
+                            <Button variant="secondary" @click="closeModal">{{ __('features.confirms-password.cancel') }}</Button>
                         </DialogClose>
 
                         <Button variant="default" :disabled="form.processing" @click="confirmPassword">
-                            {{ __('confirms-password.confirm') }}
+                            {{ __('features.confirms-password.confirm') }}
                         </Button>
                     </DialogFooter>
                 </div>
