@@ -13,6 +13,8 @@ export default defineConfigWithVueTs(
         rules: {
             'vue/multi-word-component-names': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
+            indent: ['error', 4, { SwitchCase: 1 }],
+            'vue/html-indent': ['error', 4],
         },
     },
     prettier,

@@ -8,5 +8,7 @@ declare global {
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
         route: typeof route;
+        __: (key: string, replace?: Record<string, string>) => string;
+        __n: (key: string, number: number, replace?: Record<string, string>) => string;
     }
 }
