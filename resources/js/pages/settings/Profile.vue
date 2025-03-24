@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import {Head, Link, router, useForm, usePage} from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 
 import DeleteUser from '@/components/DeleteUser.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import InputError from '@/components/InputError.vue';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type SharedData, type User } from '@/types';
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {getInitials} from "../../composables/useInitials";
-import {ref} from "vue";
+import { ref } from 'vue';
+import { getInitials } from '../../composables/useInitials';
 
 interface Props {
     mustVerifyEmail: boolean;
@@ -48,17 +48,17 @@ const submit = () => {
 
     form.post(route('user.profile.update'), {
         preserveScroll: true,
-        preserveState: false
+        preserveState: false,
     });
 };
 
-const deleteAvatarForm = useForm({})
+const deleteAvatarForm = useForm({});
 
 const deleteAvatar = () => {
     deleteAvatarForm.delete(route('user.profile.avatar.delete'), {
         preserveScroll: true,
-        preserveState: false
-    })
+        preserveState: false,
+    });
 };
 
 const selectNewPhoto = () => {
@@ -67,15 +67,10 @@ const selectNewPhoto = () => {
     }
 };
 
-const deletePhoto = () => {
-    form.avatar = null;
-    photoPreview.value = null;
-};
-
 const updatePhotoPreview = () => {
     const photo = profilePhotoInput.value?.files[0];
 
-    if (! photo) return;
+    if (!photo) return;
 
     const reader = new FileReader();
 
@@ -97,17 +92,15 @@ const updatePhotoPreview = () => {
 
                 <form @submit.prevent="submit" class="space-y-6">
                     <div class="flex items-center gap-4">
-                        <input
-                            id="photo"
-                            ref="profilePhotoInput"
-                            type="file"
-                            class="hidden"
-                            @change="updatePhotoPreview"
-                        >
+                        <input id="photo" ref="profilePhotoInput" type="file" class="hidden" @change="updatePhotoPreview" />
 
                         <div>
                             <Avatar class="size-24 overflow-hidden rounded-lg">
-                                <AvatarImage v-if="!!user.avatar_url || !!photoPreview" :src="photoPreview ? photoPreview : user.avatar_url" :alt="user.name" />
+                                <AvatarImage
+                                    v-if="!!user.avatar_url || !!photoPreview"
+                                    :src="photoPreview ? photoPreview : user.avatar_url"
+                                    :alt="user.name"
+                                />
                                 <AvatarFallback class="rounded-lg text-black dark:text-white">
                                     {{ getInitials(user.name) }}
                                 </AvatarFallback>
@@ -115,14 +108,25 @@ const updatePhotoPreview = () => {
                             <InputError class="mt-2" :message="form.errors.avatar" />
                         </div>
                         <div class="flex items-center gap-x-2">
-                            <Button variant="outline" @click.prevent="selectNewPhoto">{{ __('settings.profile.avatarUpload') }}</Button>
-                            <Button v-if="user.avatar" variant="destructive" :disabled="deleteAvatarForm.processing" @click.prevent="deleteAvatar">{{ __('settings.profile.deleteAvatar') }}</Button>
+                            <Button variant="outline" @click.prevent="selectNewPhoto">
+                                {{ __('settings.profile.avatarUpload') }}
+                            </Button>
+                            <Button v-if="user.avatar" variant="destructive" :disabled="deleteAvatarForm.processing" @click.prevent="deleteAvatar"
+                                >{{ __('settings.profile.deleteAvatar') }}
+                            </Button>
                         </div>
                     </div>
 
                     <div class="grid gap-2">
                         <Label for="name">{{ __('settings.profile.name') }}</Label>
-                        <Input id="name" class="mt-1 block w-full" v-model="form.name" required autocomplete="name" :placeholder="__('settings.profile.fullName')" />
+                        <Input
+                            id="name"
+                            class="mt-1 block w-full"
+                            v-model="form.name"
+                            required
+                            autocomplete="name"
+                            :placeholder="__('settings.profile.fullName')"
+                        />
                         <InputError class="mt-2" :message="form.errors.name" />
                     </div>
 
@@ -167,7 +171,9 @@ const updatePhotoPreview = () => {
                             leave-active-class="transition ease-in-out"
                             leave-to-class="opacity-0"
                         >
-                            <p v-show="form.recentlySuccessful" class="text-sm text-neutral-600">{{ __('settings.profile.saved') }}</p>
+                            <p v-show="form.recentlySuccessful" class="text-sm text-neutral-600">
+                                {{ __('settings.profile.saved') }}
+                            </p>
                         </Transition>
                     </div>
                 </form>
