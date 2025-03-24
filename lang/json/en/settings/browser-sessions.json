@@ -1,0 +1,9 @@
+{
+    "browserSessions": "Browser sessions",
+    "manageSessions": "Manage and log out your active sessions on other browsers and devices.",
+    "platformUnknown": "Unknown",
+    "logOutOtherSessions": "Log Out Other Browser Sessions",
+    "logOutOtherSessionsDescription": "Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices.",
+    "thisDevice": "This device",
+    "lastActive": "Last active"
+}

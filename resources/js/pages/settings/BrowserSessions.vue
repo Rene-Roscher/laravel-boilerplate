@@ -47,11 +47,11 @@ const logoutOtherBrowserSessions = (password: string) => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Browser Sessions" />
+        <Head :title="__('settings.browser-sessions.browserSessions')" />
 
         <SettingsLayout>
             <div class="space-y-6">
-                <HeadingSmall title="Browser Sessions" description="Manage and log out your active sessions on other browsers and devices." />
+                <HeadingSmall :title="__('settings.browser-sessions.browserSessions')" :description="__('settings.browser-sessions.manageSessions')" />
 
                 <!-- Other Browser Sessions -->
                 <div v-if="sessions.length > 0" class="mt-5 space-y-6 rounded-lg bg-accent p-4">
@@ -92,15 +92,15 @@ const logoutOtherBrowserSessions = (password: string) => {
 
                         <div class="ms-3">
                             <div class="text-sm text-accent-foreground">
-                                {{ session.agent.platform ? session.agent.platform : 'Unknown' }} -
-                                {{ session.agent.browser ? session.agent.browser : 'Unknown' }}
+                                {{ session.agent.platform ? session.agent.platform : __('settings.browser-sessions.platformUnknown') }} -
+                                {{ session.agent.browser ? session.agent.browser : __('settings.browser-sessions.platformUnknown') }}
                             </div>
 
                             <div>
                                 <div class="text-xs text-muted-foreground">
                                     {{ session.ip_address }}
-                                    <badge v-if="session.is_current_device" variant="green" size="sm" class="ml-0.5">This device</badge>
-                                    <span v-else>, Last active {{ session.last_active }}</span>
+                                    <badge v-if="session.is_current_device" variant="green" size="sm" class="ml-0.5">{{ __('settings.browser-sessions.thisDevice') }}</badge>
+                                    <span v-else>, {{ __('settings.browser-sessions.lastActive') }} {{ session.last_active }}</span>
                                 </div>
                             </div>
                         </div>
@@ -108,16 +108,17 @@ const logoutOtherBrowserSessions = (password: string) => {
                 </div>
 
                 <HeadingSmall
-                    title="Log Out Other Browser Sessions"
-                    description="Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices."
+                    :title="__('settings.browser-sessions.logOutOtherSessions')"
+                    :description="__('settings.browser-sessions.logOutOtherSessionsDescription')"
                 />
 
                 <div class="mt-5">
                     <XConfirmsPassword @confirmed="logoutOtherBrowserSessions" emit-password>
-                        <Button variant="destructive">Log Out Other Browser Sessions</Button>
+                        <Button variant="destructive">{{ __('settings.browser-sessions.logOutOtherSessions') }}</Button>
                     </XConfirmsPassword>
                 </div>
             </div>
         </SettingsLayout>
     </AppLayout>
 </template>
+

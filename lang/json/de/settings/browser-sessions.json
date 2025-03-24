@@ -1,0 +1,9 @@
+{
+    "browserSessions": "Browser-Sitzungen",
+    "manageSessions": "Verwalte und logge Dich aus Deinen aktiven Sitzungen auf anderen Browsern und Geräten aus.",
+    "platformUnknown": "Unbekannt",
+    "logOutOtherSessions": "Melde Dich von anderen Browser-Sitzungen ab",
+    "logOutOtherSessionsDescription": "Bitte gib Dein Passwort ein, um zu bestätigen, dass Du Dich von Deinen anderen Browser-Sitzungen auf allen Geräten abmelden möchtest.",
+    "thisDevice": "Dieses Gerät",
+    "lastActive": "Zuletzt aktiv"
+}
