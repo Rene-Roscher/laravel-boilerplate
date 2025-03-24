@@ -101,7 +101,7 @@ return [
     |
     */
 
-    'middleware' => ['web'],
+    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'web' ],
 
     /*
     |--------------------------------------------------------------------------

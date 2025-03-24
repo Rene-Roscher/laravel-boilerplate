@@ -5,8 +5,12 @@ use App\Http\Controllers\Settings\OtherBrowserSessionsController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-Route::middleware('auth')->group(function () {
+Route::group([
+    'prefix' => LaravelLocalization::setLocale(),
+    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'auth' ]
+], function () {
     Route::redirect('settings', '/settings/profile')->name('settings');
 
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('user.profile.edit');
