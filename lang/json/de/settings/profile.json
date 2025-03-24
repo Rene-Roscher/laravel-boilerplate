@@ -10,5 +10,15 @@
     "verificationLinkSent": "Ein neuer Bestätigungslink wurde an Deine E-Mail-Adresse gesendet.",
     "save": "Speichern",
     "saved": "Gespeichert",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+
+    "deleteAccount": "Konto löschen",
+    "deleteAccountDescription": "Lösche Dein Konto und alle zugehörigen Ressourcen",
+    "warning": "Warnung",
+    "warningDescription": "Bitte fahre mit Vorsicht fort, dies kann nicht rückgängig gemacht werden.",
+    "areYouSure": "Bist Du sicher, dass Du Dein Konto löschen möchtest?",
+    "deleteWarning": "Sobald Dein Konto gelöscht wird, werden alle zugehörigen Ressourcen und Daten ebenfalls dauerhaft gelöscht. Bitte gib Dein Passwort ein, um zu bestätigen, dass Du Dein Konto dauerhaft löschen möchtest.",
+    "password": "Passwort",
+    "deleteAccountButton": "Konto löschen",
+    "cancelButton": "Abbrechen"
 }
