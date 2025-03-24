@@ -1,4 +1,7 @@
 {
+    "settings": "Einstellungen",
+    "settingsDescription": "Verwalte Dein Profil und Deine Kontoeinstellungen",
+
     "profileSettings": "Profileinstellungen",
     "profileInformation": "Profilinformationen",
     "updateNameEmail": "Aktualisiere Deinen Namen und Deine E-Mail-Adresse",
