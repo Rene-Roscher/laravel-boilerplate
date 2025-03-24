@@ -1,4 +1,7 @@
 {
     "title": "Appearance settings",
-    "description": "Update your account's appearance settings"
+    "description": "Update your account's appearance settings",
+
+    "languageTitle": "Language",
+    "languageDescription": "Customize your language settings and select your preferred language"
 }

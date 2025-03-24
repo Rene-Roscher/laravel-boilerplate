@@ -7,6 +7,7 @@ import { type BreadcrumbItem } from '@/types';
 
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
+import LocaleTabs from "@/components/LocaleTabs.vue";
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -24,6 +25,9 @@ const breadcrumbItems: BreadcrumbItem[] = [
             <div class="space-y-6">
                 <HeadingSmall :title="__('settings.appearance.title')" :description="__('settings.appearance.description')" />
                 <AppearanceTabs />
+
+                <HeadingSmall :title="__('settings.appearance.languageTitle')" :description="__('settings.appearance.languageDescription')" />
+                <LocaleTabs/>
             </div>
         </SettingsLayout>
     </AppLayout>
