@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
+import {Head, Link, router, useForm, usePage} from '@inertiajs/vue3';
 
 import DeleteUser from '@/components/DeleteUser.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
@@ -10,6 +10,9 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type SharedData, type User } from '@/types';
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {getInitials} from "../../composables/useInitials";
+import {ref} from "vue";
 
 interface Props {
     mustVerifyEmail: boolean;
@@ -28,15 +31,59 @@ const breadcrumbs: BreadcrumbItem[] = [
 const page = usePage<SharedData>();
 const user = page.props.auth.user as User;
 
+const profilePhotoInput = ref<HTMLInputElement | null>(null);
+const photoPreview = ref<string | null>(null);
+
 const form = useForm({
+    _method: 'PATCH',
     name: user.name,
     email: user.email,
+    avatar: null,
 });
 
 const submit = () => {
-    form.patch(route('user.profile.update'), {
+    if (profilePhotoInput.value) {
+        form.avatar = profilePhotoInput.value?.files[0];
+    }
+
+    form.post(route('user.profile.update'), {
         preserveScroll: true,
+        preserveState: false
     });
+};
+
+const deleteAvatarForm = useForm({})
+
+const deleteAvatar = () => {
+    deleteAvatarForm.delete(route('user.profile.avatar.delete'), {
+        preserveScroll: true,
+        preserveState: false
+    })
+};
+
+const selectNewPhoto = () => {
+    if (profilePhotoInput.value) {
+        profilePhotoInput.value.click();
+    }
+};
+
+const deletePhoto = () => {
+    form.avatar = null;
+    photoPreview.value = null;
+};
+
+const updatePhotoPreview = () => {
+    const photo = profilePhotoInput.value?.files[0];
+
+    if (! photo) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        photoPreview.value = e.target?.result as string;
+    };
+
+    reader.readAsDataURL(photo);
 };
 </script>
 
@@ -49,6 +96,30 @@ const submit = () => {
                 <HeadingSmall :title="__('settings.profile.profileInformation')" :description="__('settings.profile.updateNameEmail')" />
 
                 <form @submit.prevent="submit" class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <input
+                            id="photo"
+                            ref="profilePhotoInput"
+                            type="file"
+                            class="hidden"
+                            @change="updatePhotoPreview"
+                        >
+
+                        <div>
+                            <Avatar class="size-24 overflow-hidden rounded-lg">
+                                <AvatarImage v-if="!!user.avatar_url || !!photoPreview" :src="photoPreview ? photoPreview : user.avatar_url" :alt="user.name" />
+                                <AvatarFallback class="rounded-lg text-black dark:text-white">
+                                    {{ getInitials(user.name) }}
+                                </AvatarFallback>
+                            </Avatar>
+                            <InputError class="mt-2" :message="form.errors.avatar" />
+                        </div>
+                        <div class="flex items-center gap-x-2">
+                            <Button variant="outline" @click.prevent="selectNewPhoto">{{ __('settings.profile.avatarUpload') }}</Button>
+                            <Button v-if="user.avatar" variant="destructive" :disabled="deleteAvatarForm.processing" @click.prevent="deleteAvatar">{{ __('settings.profile.deleteAvatar') }}</Button>
+                        </div>
+                    </div>
+
                     <div class="grid gap-2">
                         <Label for="name">{{ __('settings.profile.name') }}</Label>
                         <Input id="name" class="mt-1 block w-full" v-model="form.name" required autocomplete="name" :placeholder="__('settings.profile.fullName')" />

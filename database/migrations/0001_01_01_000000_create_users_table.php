@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamp('two_factor_confirmed_at')->nullable();
 
             /* Profile Photo */
-            $table->string('profile_photo_path', 2048)->nullable();
+            $table->string('avatar', 2048)->nullable();
 
             $table->rememberToken();
             $table->timestamps();

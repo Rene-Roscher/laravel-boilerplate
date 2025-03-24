@@ -24,7 +24,9 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasMedia;
 
     protected $mediaFields = [
-        'profile_photo_path',
+        'avatar' => [
+            'path' => 'avatars',
+        ],
     ];
 
     /**
@@ -39,7 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'two_factor_secret',
         'two_factor_recovery_codes',
         'two_factor_confirmed_at',
-        'profile_photo_path',
+        'avatar',
     ];
 
     /**
@@ -55,7 +57,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $appends = [
-        'two_factor_enabled', 'two_factor_pending', 'profile_photo_url',
+        'two_factor_enabled', 'two_factor_pending', 'avatar_url',
     ];
 
     /**
@@ -86,10 +88,10 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    public function profilePhotoUrl(): Attribute
+    public function avatarUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getMediaUrl('profile_photo_path', 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF')
+            get: fn () => $this->getMediaUrl('avatar', 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF')
         );
     }
 }

@@ -2,6 +2,9 @@
     "settings": "Settings",
     "settingsDescription": "Manage your profile and account settings",
 
+    "avatarUpload": "Upload avatar",
+    "deleteAvatar": "Delete",
+
     "profileSettings": "Profile settings",
     "profileInformation": "Profile information",
     "updateNameEmail": "Update your name and email address",

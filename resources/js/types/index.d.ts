@@ -29,8 +29,9 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    avatar?: string;
     email_verified_at: string | null;
+    avatar_url: string | null;
+    avatar: string | null;
     created_at: string;
     updated_at: string;
 }

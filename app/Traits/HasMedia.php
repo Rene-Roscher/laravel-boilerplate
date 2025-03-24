@@ -21,7 +21,7 @@ trait HasMedia
      *
      * @var string
      */
-    protected string $defaultMediaPath = '/';
+    protected string $defaultMediaPath = 'media';
 
     /**
      * Default visibility for media files.
@@ -86,7 +86,10 @@ trait HasMedia
         $path = $options['path'] ?? $this->defaultMediaPath;
         $visibility = $options['visibility'] ?? $this->defaultMediaVisibility;
 
+        $oldMediaPath = $this->{$mediaField};
+
         $fileName = $this->generateUniqueFileName($file);
+
         $storedPath = $file->storeAs($path, $fileName, [
             'disk' => $disk,
             'visibility' => $visibility,
@@ -95,7 +98,7 @@ trait HasMedia
         $this->attributes[$mediaField] = $storedPath;
 
         // Delete the old media file if it exists
-        if ($oldMediaPath = $this->{$mediaField}) {
+        if ($oldMediaPath) {
             $this->deleteMediaFile($oldMediaPath, $options);
         }
     }
@@ -116,18 +119,18 @@ trait HasMedia
     /**
      * Delete the media file associated with the given attribute.
      *
-     * @param string $mediaPath
+     * @param string|null $mediaPath
      * @param array $options
      * @return void
      */
     public function deleteMediaFile(
-        string $mediaPath,
-        array  $options
+        ?string $mediaPath = null,
+        array  $options = []
     ): void
     {
         $disk = $options['disk'] ?? $this->defaultMediaDisk;
         $storage = Storage::disk($disk);
-        if ($storage->exists($mediaPath)) {
+        if ($mediaPath && $storage->exists($mediaPath)) {
             $storage->delete($mediaPath);
         }
     }
@@ -152,5 +155,15 @@ trait HasMedia
         return $mediaPath && $storage->exists($mediaPath)
             ? $storage->url($mediaPath)
             : $fallback;
+    }
+
+    public function deleteMedia(
+        string $mediaField
+    ): static
+    {
+        $options = $this->mediaFields[$mediaField] ?? [];
+        $this->deleteMediaFile($this->{$mediaField}, $options);
+        $this->{$mediaField} = null;
+        return $this;
     }
 }

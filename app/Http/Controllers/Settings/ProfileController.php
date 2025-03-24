@@ -40,6 +40,13 @@ class ProfileController extends Controller
         return to_route('user.profile.edit');
     }
 
+    public function deleteUserAvatar(Request $request)
+    {
+        $request->user()->deleteMedia('avatar')->save();
+
+        return redirect()->back();
+    }
+
     /**
      * Delete the user's profile.
      */
