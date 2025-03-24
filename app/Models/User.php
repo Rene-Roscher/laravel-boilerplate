@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -20,6 +21,11 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable, HasUuids;
     use HasRoles;
+    use HasMedia;
+
+    protected $mediaFields = [
+        'profile_photo_path',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -33,6 +39,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'two_factor_secret',
         'two_factor_recovery_codes',
         'two_factor_confirmed_at',
+        'profile_photo_path',
     ];
 
     /**
@@ -48,7 +55,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $appends = [
-        'two_factor_enabled', 'two_factor_pending',
+        'two_factor_enabled', 'two_factor_pending', 'profile_photo_url',
     ];
 
     /**
@@ -76,6 +83,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return Attribute::make(
             get: fn () => Fortify::confirmsTwoFactorAuthentication() && ! is_null($this->two_factor_secret) && is_null($this->two_factor_confirmed_at)
+        );
+    }
+
+    public function profilePhotoUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getMediaUrl('profile_photo_path', 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF')
         );
     }
 }
