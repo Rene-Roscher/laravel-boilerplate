@@ -13,7 +13,7 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Two-Factor authentication',
+        title: 'settings.navigation.breadcrumb.twoFactorAuthentication',
         href: '/settings/two-factor-authentication',
     },
 ];

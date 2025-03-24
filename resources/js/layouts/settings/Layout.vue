@@ -7,23 +7,23 @@ import { Link, usePage } from '@inertiajs/vue3';
 
 const sidebarNavItems: NavItem[] = [
     {
-        title: 'Profile',
+        title: 'settings.navigation.sidebar.profile',
         href: route('user.profile.edit'),
     },
     {
-        title: 'Password',
+        title: 'settings.navigation.sidebar.password',
         href: route('user.password.edit'),
     },
     {
-        title: 'Appearance',
+        title: 'settings.navigation.sidebar.appearance',
         href: route('user.appearance.edit'),
     },
     {
-        title: 'Two-Factor Authentication',
+        title: 'settings.navigation.sidebar.twoFactorAuthentication',
         href: route('user.two-factor-authentication.edit'),
     },
     {
-        title: 'Browser Sessions',
+        title: 'settings.navigation.sidebar.browserSessions',
         href: route('user.browser-sessions.index'),
     },
 ];
@@ -48,7 +48,7 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
                         as-child
                     >
                         <Link :href="item.href">
-                            {{ item.title }}
+                            {{ __(item.title) }}
                         </Link>
                     </Button>
                 </nav>

@@ -2,6 +2,12 @@ import { i18nVue, trans, transChoice } from 'laravel-vue-i18n';
 
 export default {
     install(app) {
+        app.config.globalProperties.__ = (key, replace = {}) => (key ? trans(key, replace) : '');
+        app.config.globalProperties.__n = (key, number, replace = {}) => transChoice(key, number, replace);
+
+        app.provide('__', app.config.globalProperties.__);
+        app.provide('__n', app.config.globalProperties.__n);
+
         app.use(i18nVue, {
             resolve: async (lang) => {
                 const langFiles = import.meta.glob('../../../lang/*.json', { eager: true });
@@ -34,8 +40,5 @@ export default {
                 return messages;
             },
         });
-
-        app.config.globalProperties.__ = (key, replace = {}) => (key ? trans(key, replace) : '');
-        app.config.globalProperties.__n = (key, number, replace = {}) => transChoice(key, number, replace);
     },
 };

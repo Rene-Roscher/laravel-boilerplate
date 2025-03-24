@@ -4,6 +4,7 @@ import { renderToString } from '@vue/server-renderer';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createSSRApp, h } from 'vue';
 import { route as ziggyRoute } from 'ziggy-js';
+import {trans, transChoice} from "laravel-vue-i18n";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -24,13 +25,19 @@ createServer((page) =>
 
             // Create route function...
             const route = (name: string, params?: any, absolute?: boolean) => ziggyRoute(name, params, absolute, ziggyConfig);
+            const __ = (key: string, replace = {}) => (key ? trans(key, replace) : '');
+            const __n = (key: string, number: number, replace = {}) => transChoice(key, number, replace);
 
             // Make route function available globally...
             app.config.globalProperties.route = route;
+            app.config.globalProperties.__ = __;
+            app.config.globalProperties.__n = __n;
 
             // Make route function available globally for SSR...
             if (typeof window === 'undefined') {
                 global.route = route;
+                global.__ = __;
+                global.__n = __n;
             }
 
             app.use(plugin);

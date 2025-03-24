@@ -1,0 +1,13 @@
+{
+    "sidebar.profile": "Profil",
+    "sidebar.password": "Passwort",
+    "sidebar.appearance": "Aussehen",
+    "sidebar.twoFactorAuthentication": "Zwei-Faktor-Authentifizierung",
+    "sidebar.browserSessions": "Browser-Sitzungen",
+
+    "breadcrumb.profile": "Profileinstellungen",
+    "breadcrumb.password": "Passworteinstellungen",
+    "breadcrumb.appearance": "Erscheinungsbild",
+    "breadcrumb.twoFactorAuthentication": "Zwei-Faktor-Authentifizierung",
+    "breadcrumb.browserSessions": "Browser-Sitzungen"
+}

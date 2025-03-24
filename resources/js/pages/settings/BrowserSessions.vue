@@ -11,7 +11,7 @@ import SettingsLayout from '@/layouts/settings/Layout.vue';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Browser sessions',
+        title: 'settings.navigation.breadcrumb.browserSessions',
         href: '/settings/browser-sessions',
     },
 ];
