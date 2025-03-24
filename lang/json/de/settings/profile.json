@@ -1,2 +1,14 @@
 {
+    "profileSettings": "Profileinstellungen",
+    "profileInformation": "Profilinformationen",
+    "updateNameEmail": "Aktualisiere Deinen Namen und Deine E-Mail-Adresse",
+    "name": "Name",
+    "fullName": "Vollständiger Name",
+    "emailAddress": "E-Mail-Adresse",
+    "emailUnverified": "Deine E-Mail-Adresse ist nicht verifiziert.",
+    "resendVerificationEmail": "Klicke hier, um die Bestätigungs-E-Mail erneut zu senden.",
+    "verificationLinkSent": "Ein neuer Bestätigungslink wurde an Deine E-Mail-Adresse gesendet.",
+    "save": "Speichern",
+    "saved": "Gespeichert",
+    "cancel": "Abbrechen"
 }

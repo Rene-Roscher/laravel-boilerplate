@@ -42,21 +42,21 @@ const submit = () => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
-        <Head title="Profile settings" />
+        <Head :title="__('settings.profile.profileSettings')" />
 
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
-                <HeadingSmall title="Profile information" description="Update your name and email address" />
+                <HeadingSmall :title="__('settings.profile.profileInformation')" :description="__('settings.profile.updateNameEmail')" />
 
                 <form @submit.prevent="submit" class="space-y-6">
                     <div class="grid gap-2">
-                        <Label for="name">Name</Label>
-                        <Input id="name" class="mt-1 block w-full" v-model="form.name" required autocomplete="name" placeholder="Full name" />
+                        <Label for="name">{{ __('settings.profile.name') }}</Label>
+                        <Input id="name" class="mt-1 block w-full" v-model="form.name" required autocomplete="name" :placeholder="__('settings.profile.fullName')" />
                         <InputError class="mt-2" :message="form.errors.name" />
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="email">Email address</Label>
+                        <Label for="email">{{ __('settings.profile.emailAddress') }}</Label>
                         <Input
                             id="email"
                             type="email"
@@ -64,31 +64,31 @@ const submit = () => {
                             v-model="form.email"
                             required
                             autocomplete="username"
-                            placeholder="Email address"
+                            :placeholder="__('settings.profile.emailAddress')"
                         />
                         <InputError class="mt-2" :message="form.errors.email" />
                     </div>
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">
                         <p class="-mt-4 text-sm text-muted-foreground">
-                            Your email address is unverified.
+                            {{ __('settings.profile.emailUnverified') }}
                             <Link
                                 :href="route('verification.send')"
                                 method="post"
                                 as="button"
                                 class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:!decoration-current dark:decoration-neutral-500"
                             >
-                                Click here to resend the verification email.
+                                {{ __('settings.profile.resendVerificationEmail') }}
                             </Link>
                         </p>
 
                         <div v-if="status === 'verification-link-sent'" class="mt-2 text-sm font-medium text-green-600">
-                            A new verification link has been sent to your email address.
+                            {{ __('settings.profile.verificationLinkSent') }}
                         </div>
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button :disabled="form.processing">Save</Button>
+                        <Button :disabled="form.processing">{{ __('settings.profile.save') }}</Button>
 
                         <Transition
                             enter-active-class="transition ease-in-out"
@@ -96,7 +96,7 @@ const submit = () => {
                             leave-active-class="transition ease-in-out"
                             leave-to-class="opacity-0"
                         >
-                            <p v-show="form.recentlySuccessful" class="text-sm text-neutral-600">Saved.</p>
+                            <p v-show="form.recentlySuccessful" class="text-sm text-neutral-600">{{ __('settings.profile.saved') }}</p>
                         </Transition>
                     </div>
                 </form>

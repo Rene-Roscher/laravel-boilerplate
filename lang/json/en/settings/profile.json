@@ -1,2 +1,14 @@
 {
+    "profileSettings": "Profile settings",
+    "profileInformation": "Profile information",
+    "updateNameEmail": "Update your name and email address",
+    "name": "Name",
+    "fullName": "Full name",
+    "emailAddress": "Email address",
+    "emailUnverified": "Your email address is unverified.",
+    "resendVerificationEmail": "Click here to resend the verification email.",
+    "verificationLinkSent": "A new verification link has been sent to your email address.",
+    "save": "Save",
+    "saved": "Saved",
+    "cancel": "Cancel"
 }
