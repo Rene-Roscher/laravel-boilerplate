@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
+/**
+ * @copyright Laravel (Jetstream)
+ */
 trait HasOrganizations
 {
     // boot and create
