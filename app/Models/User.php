@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasMedia;
+use App\Models\Traits\HasOrganizations;
 use App\Models\Traits\HasShortableUuidTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -26,8 +27,9 @@ class User extends Authenticatable implements MustVerifyEmail
     use TwoFactorAuthenticatable;
     use HasRoles;
     use HasMedia;
+    use HasOrganizations;
 
-    protected $mediaFields = [
+    protected array $mediaFields = [
         'avatar' => [
             'path' => 'avatars',
         ],
