@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits;
 
-trait HasShortableUuidTrait
+trait HasShortableUuid
 {
 
     /**

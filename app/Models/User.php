@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasMedia;
 use App\Models\Traits\HasOrganizations;
-use App\Models\Traits\HasShortableUuidTrait;
+use App\Models\Traits\HasShortableUuid;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -23,7 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    use HasUuids, HasShortableUuidTrait;
+    use HasUuids, HasShortableUuid;
     use TwoFactorAuthenticatable;
     use HasRoles;
     use HasMedia;

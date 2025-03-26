@@ -16,7 +16,28 @@ return new class extends Migration
             $table->foreignUuid('user_id')->index()->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->boolean('is_default')->default(false); // Identifies the default organization for a user
+            $table->string('avatar', 2048)->nullable();
             $table->timestamps();
+        });
+
+        Schema::create('organization_user', function (Blueprint $table) {
+            $table->uuid('id')->primary()->unique();
+            $table->foreignUuid('organization_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->string('role')->nullable();
+            $table->timestamps();
+
+            $table->unique(['organization_id', 'user_id']);
+        });
+
+        Schema::create('organization_invitation', function (Blueprint $table) {
+            $table->uuid('id')->primary()->unique();
+            $table->foreignUuid('organization_id')->constrained()->cascadeOnDelete();
+            $table->string('email');
+            $table->string('role')->nullable();
+            $table->timestamps();
+
+            $table->unique(['organization_id', 'email']);
         });
     }
 
@@ -26,5 +47,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('organizations');
+        Schema::dropIfExists('organization_user');
+        Schema::dropIfExists('organization_invitation');
     }
 };

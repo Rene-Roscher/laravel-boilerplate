@@ -3,7 +3,9 @@
 namespace App\Models\Organization;
 
 use App\Models\BaseModel;
+use App\Models\Traits\HasMedia;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,11 +13,30 @@ use Illuminate\Support\Collection;
 
 class Organization extends BaseModel
 {
+    use HasMedia;
 
     protected $fillable = [
         'name',
         'is_default',
+        'avatar',
     ];
+
+    protected array $mediaFields = [
+        'avatar' => [
+            'path' => 'avatars',
+        ],
+    ];
+
+    protected $appends = [
+        'avatar_url',
+    ];
+
+    public function avatarUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getMediaUrl('avatar', 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF')
+        );
+    }
 
     /**
      * Get the owner of the organization.
