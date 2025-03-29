@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Organization;
 use App\Enums\OrganizationRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Organization\Organization;
+use App\Notifications\Organization\OrganizationInvitationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -49,7 +50,9 @@ class OrganizationUserController extends Controller
             ],
         ]);
 
-        $organization->invitations()->create($request->only(['email', 'role']));
+        /** @var \App\Models\Organization\OrganizationInvitation $invitation */
+        $invitation = $organization->invitations()->create($request->only(['email', 'role']));
+        $invitation->notify(new OrganizationInvitationNotification($invitation));
 
         return back();
     }

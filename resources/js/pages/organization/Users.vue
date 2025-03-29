@@ -188,7 +188,7 @@ const showManageDialog = computed({
                     </div>
 
                     <div class="mt-5">
-                        <Button variant="default" @click.prevent="showInviteDialog = true">{{ __('organization.profile.inviteMember') }} </Button>
+                        <Button v-if="canAddMember" variant="default" @click.prevent="showInviteDialog = true">{{ __('organization.profile.inviteMember') }} </Button>
                     </div>
 
                     <template v-if="invitations.length > 0">
@@ -210,6 +210,7 @@ const showManageDialog = computed({
                                         </div>
                                     </div>
                                     <Button
+                                        v-if="canAddMember"
                                         variant="ghost"
                                         size="icon"
                                         class="h-9 w-9 text-destructive"
@@ -223,7 +224,7 @@ const showManageDialog = computed({
                     </template>
 
                     <template #emptyActions>
-                        <Button variant="default" @click.prevent="showInviteDialog = true">{{ __('organization.profile.inviteMember') }} </Button>
+                        <Button v-if="canAddMember" variant="default" @click.prevent="showInviteDialog = true">{{ __('organization.profile.inviteMember') }} </Button>
                     </template>
                 </x-data-state>
             </div>

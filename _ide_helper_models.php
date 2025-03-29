@@ -32,18 +32,20 @@ namespace App\Models\Organization{
  * @property string $user_id
  * @property string $name
  * @property int $is_default
+ * @property string|null $avatar
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read mixed $avatar_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Organization\OrganizationInvitation> $invitations
  * @property-read int|null $invitations_count
- * @property-read \App\Models\User $owner
+ * @property-read \App\Models\User|null $owner
  * @property-read \App\Models\Organization\OrganizationUser|null $membership
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Organization newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Organization newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Organization query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Organization whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Organization whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Organization whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Organization whereIsDefault($value)
@@ -66,6 +68,9 @@ namespace App\Models\Organization{
  * @property string|null $role
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \App\Models\Organization\Organization $organization
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrganizationInvitation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrganizationInvitation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrganizationInvitation query()
@@ -180,6 +185,7 @@ namespace App\Models{
  * @property string|null $two_factor_secret
  * @property string|null $two_factor_recovery_codes
  * @property \Illuminate\Support\Carbon|null $two_factor_confirmed_at
+ * @property string|null $current_organization_id
  * @property string|null $avatar
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -207,6 +213,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User role($roles, $guard = null, $without = false)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCurrentOrganizationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
