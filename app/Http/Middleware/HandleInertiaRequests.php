@@ -44,7 +44,20 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user(),
+                'user' => function () use ($request) {
+                    $user = $request->user();
+
+                    if (!$user) {
+                        return $user;
+                    }
+
+                    return array_merge($user->toArray(), [
+                        'organizations' => $user->allOrganizations(),
+                        'current_organization' => array_merge($user->currentOrganization->toArray(), [
+                            'role' => (array) $user->organizationRole($user->currentOrganization)
+                        ]),
+                    ]);
+                },
             ],
             'locale' => app()->getLocale(),
             'ziggy' => [

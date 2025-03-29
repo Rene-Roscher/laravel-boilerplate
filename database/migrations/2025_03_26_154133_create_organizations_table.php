@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('organizations', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
-            $table->foreignUuid('user_id')->index()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->index();
             $table->string('name');
             $table->boolean('is_default')->default(false); // Identifies the default organization for a user
             $table->string('avatar', 2048)->nullable();
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->unique(['organization_id', 'user_id']);
         });
 
-        Schema::create('organization_invitation', function (Blueprint $table) {
+        Schema::create('organization_invitations', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->foreignUuid('organization_id')->constrained()->cascadeOnDelete();
             $table->string('email');
@@ -48,6 +48,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('organizations');
         Schema::dropIfExists('organization_user');
-        Schema::dropIfExists('organization_invitation');
+        Schema::dropIfExists('organization_invitations');
     }
 };

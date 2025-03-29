@@ -29,12 +29,6 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasMedia;
     use HasOrganizations;
 
-    protected array $mediaFields = [
-        'avatar' => [
-            'path' => 'avatars',
-        ],
-    ];
-
     /**
      * The attributes that are mass assignable.
      *
@@ -64,6 +58,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $appends = [
         'two_factor_enabled', 'two_factor_pending', 'avatar_url',
+    ];
+
+    protected $with = [
+        'currentOrganization', 'organizations'
+    ];
+
+    protected array $mediaFields = [
+        'avatar' => [
+            'path' => 'avatars',
+        ],
     ];
 
     /**

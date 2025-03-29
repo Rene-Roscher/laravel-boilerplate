@@ -12,7 +12,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type SharedData, type User } from '@/types';
 import { ref } from 'vue';
-import { getInitials } from '../../composables/useInitials';
+import { getInitials } from '@/composables/useInitials';
 
 interface Props {
     mustVerifyEmail: boolean;
@@ -108,12 +108,10 @@ const updatePhotoPreview = () => {
                             <InputError class="mt-2" :message="form.errors.avatar" />
                         </div>
                         <div class="flex items-center gap-x-2">
-                            <Button variant="outline" @click.prevent="selectNewPhoto">
+                            <Button variant="outline" @click="selectNewPhoto" type="button">
                                 {{ __('settings.profile.avatarUpload') }}
                             </Button>
-                            <Button v-if="user.avatar" variant="destructive" :disabled="deleteAvatarForm.processing" @click.prevent="deleteAvatar"
-                                >{{ __('settings.profile.deleteAvatar') }}
-                            </Button>
+                            <Button v-if="user.avatar" variant="destructive" :disabled="deleteAvatarForm.processing" @click.prevent="deleteAvatar" type="button">{{ __('settings.profile.deleteAvatar') }}</Button>
                         </div>
                     </div>
 

@@ -2,9 +2,28 @@
 
 namespace App\Models\Organization;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use App\Models\BaseModel;
 
-class OrganizationInvitation extends Pivot
+/**
+ * @mixin IdeHelperOrganizationInvitation
+ */
+class OrganizationInvitation extends BaseModel
 {
-    //
+
+    protected $fillable = [
+        'email',
+        'role',
+        'organization_id',
+    ];
+
+    /**
+     * Get the organization that owns the invitation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
 }

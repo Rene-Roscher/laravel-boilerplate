@@ -20,11 +20,11 @@ trait HasOrganizations
 
     public static function bootHasOrganizations()
     {
-        static::created(function ($model) {
-            $model->ownedOrganizations()->create([
+        static::creating(function ($model) {
+            $model->current_organization_id = $model->ownedOrganizations()->create([
                 'name' => explode(' ', $model->name, 2)[0]."'s Org",
                 'is_default' => true,
-            ]);
+            ])->id;
         });
     }
 

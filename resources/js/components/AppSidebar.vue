@@ -2,11 +2,21 @@
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter, SidebarGroup,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem
+} from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+import NavOrganization from "@/components/organization/NavOrganization.vue";
 
 const mainNavItems: NavItem[] = [
     {
@@ -45,6 +55,10 @@ const footerNavItems: NavItem[] = [
         </SidebarHeader>
 
         <SidebarContent>
+            <SidebarGroup class="px-2 py-0">
+                <SidebarGroupLabel>Organization</SidebarGroupLabel>
+                <NavOrganization/>
+            </SidebarGroup>
             <NavMain :items="mainNavItems" />
         </SidebarContent>
 

@@ -3,13 +3,13 @@
 namespace App\Enums;
 
 use ArchTech\Enums\From;
+use ArchTech\Enums\Names;
 
 enum OrganizationRoleEnum
 {
-    use From;
+    use From, Names;
 
     case ADMIN;
-    case MANAGER;
     case MEMBER;
     case VIEWER;
 
@@ -17,7 +17,6 @@ enum OrganizationRoleEnum
     {
         return match ($this) {
             self::ADMIN => 'Administrator',
-            self::MANAGER => 'Manager',
             self::MEMBER => 'Team-Member',
             self::VIEWER => 'Viewer',
         };
@@ -31,18 +30,18 @@ enum OrganizationRoleEnum
     public function permissions(): array
     {
         return match ($this) {
-            self::ADMIN, self::MANAGER => [
-                AbilityEnum::create,
-                AbilityEnum::read,
-                AbilityEnum::update,
-                AbilityEnum::delete,
+            self::ADMIN => [
+                AbilityEnum::create->name,
+                AbilityEnum::read->name,
+                AbilityEnum::update->name,
+                AbilityEnum::delete->name,
             ],
             self::MEMBER => [
-                AbilityEnum::read,
-                AbilityEnum::update,
+                AbilityEnum::read->name,
+                AbilityEnum::update->name,
             ],
             self::VIEWER => [
-                AbilityEnum::read,
+                AbilityEnum::read->name,
             ],
         };
     }
@@ -53,8 +52,7 @@ enum OrganizationRoleEnum
     public function description(): string
     {
         return match ($this) {
-            self::ADMIN => 'Full access',
-            self::MANAGER => 'Full access except delete',
+            self::ADMIN => 'Full access to everything',
             self::MEMBER => 'Can read and update',
             self::VIEWER => 'Read only',
         };
@@ -63,6 +61,7 @@ enum OrganizationRoleEnum
     public function toArray()
     {
         return [
+            'id' => $this->name,
             'label' => $this->label(),
             'description' => $this->description(),
             'permissions' => $this->permissions(),
@@ -72,15 +71,23 @@ enum OrganizationRoleEnum
     public static function owner(): array
     {
         return [
+            'id' => 'owner',
             'label' => 'Owner',
             'description' => 'Full access',
             'permissions' => [
-                AbilityEnum::create,
-                AbilityEnum::read,
-                AbilityEnum::update,
-                AbilityEnum::delete,
+                AbilityEnum::create->name,
+                AbilityEnum::read->name,
+                AbilityEnum::update->name,
+                AbilityEnum::delete->name,
             ],
         ];
+    }
+
+    public static function all(): array
+    {
+        return collect(self::cases())->map(function ($role) {
+            return $role->toArray();
+        })->toArray();
     }
 
 }

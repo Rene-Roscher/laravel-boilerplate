@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Enums\AbilityEnum;
+use App\Enums\OrganizationRoleEnum;
 use App\Models\Organization\Organization;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -39,7 +41,7 @@ class OrganizationPolicy
      */
     public function update(User $user, Organization $organization): bool
     {
-        return $user->ownsOrganization($organization);
+        return $user->hasOrganizationPermission($organization, AbilityEnum::update->name);
     }
 
     /**
@@ -47,7 +49,7 @@ class OrganizationPolicy
      */
     public function addOrganizationMember(User $user, Organization $organization): bool
     {
-        return $user->ownsOrganization($organization);
+        return $user->ownsOrganization($organization) || $user->hasOrganizationRole($organization, OrganizationRoleEnum::ADMIN);
     }
 
     /**
@@ -55,7 +57,7 @@ class OrganizationPolicy
      */
     public function updateOrganizationMember(User $user, Organization $organization): bool
     {
-        return $user->ownsOrganization($organization);
+        return $user->ownsOrganization($organization) || $user->hasOrganizationRole($organization, OrganizationRoleEnum::ADMIN);
     }
 
     /**
@@ -63,7 +65,7 @@ class OrganizationPolicy
      */
     public function removeOrganizationMember(User $user, Organization $organization): bool
     {
-        return $user->ownsOrganization($organization);
+        return $user->ownsOrganization($organization) || $user->hasOrganizationRole($organization, OrganizationRoleEnum::ADMIN);
     }
 
     /**
