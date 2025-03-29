@@ -88,4 +88,27 @@ class OrganizationUserController extends Controller
         return back();
     }
 
+    public function updateUser(Organization $organization, Request $request)
+    {
+        $this->authorize('update-organization-member', $organization);
+
+        $request->validate([
+            'user_id' => [
+                'required',
+                Rule::exists('organization_user', 'user_id')
+                    ->where('organization_id', $organization->id),
+            ],
+            'role' => [
+                'required',
+                Rule::in(OrganizationRoleEnum::names()),
+            ],
+        ]);
+
+        $organization->users()->updateExistingPivot($request->user_id, [
+            'role' => $request->role,
+        ]);
+
+        return back();
+    }
+
 }

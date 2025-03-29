@@ -1,30 +1,26 @@
 {
-    "settings": "Organization Settings",
+    "settings": "Organization settings",
     "settingsDescription": "Manage your organization profile settings",
+
+    "organizationDetails": "Organization details",
+    "organizationDetailsDescription": "Manage your organization details, including name and avatar.",
+    "organizationName": "Organization name",
 
     "avatarUpload": "Upload avatar",
     "deleteAvatar": "Delete",
 
-    "profileSettings": "Organization settings",
-    "profileInformation": "Profile information",
-    "updateNameEmail": "Update your name and email address",
-    "name": "Name",
-    "fullName": "Full name",
-    "emailAddress": "Email address",
-    "emailUnverified": "Your email address is unverified.",
-    "resendVerificationEmail": "Click here to resend the verification email.",
-    "verificationLinkSent": "A new verification link has been sent to your email address.",
-    "save": "Save",
-    "saved": "Saved",
-    "cancel": "Cancel",
+    "members": "Organization members",
+    "membersCollaboration": "Invite members to work together.",
+    "noMembers": "No members found",
+    "noMembersDescription": "You don't have any members in your organization yet. You can invite them to join your organization.",
 
-    "deleteAccount": "Delete account",
-    "deleteAccountDescription": "Delete your account and all of its resources",
-    "warning": "Warning",
-    "warningDescription": "Please proceed with caution, this cannot be undone.",
-    "areYouSure": "Are you sure you want to delete your account?",
-    "deleteWarning": "Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.",
-    "password": "Password",
-    "deleteAccountButton": "Delete account",
-    "cancelButton": "Cancel"
+    "inviteMember": "Invite member",
+    "inviteMemberDescription": "Invite members to your organization by entering their email addresses. They will receive an email invitation to join your organization.",
+    "role": "Role",
+
+    "manageMember": "Manage member",
+    "manageMemberDescription": "Manage the member's role in your organization. You can change their role or remove them from your organization.",
+
+    "pendingInvitations": "Pending Invitations",
+    "pendingInvitationsDescription": "All pending invitations to join your organization will be listed here. You can cancel any pending invitations if needed."
 }

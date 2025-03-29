@@ -1,4 +1,8 @@
 {
     "German": "Deutsch",
-    "English": "Englisch"
+    "English": "Englisch",
+    "save": "Speichern",
+    "saved": "Gespeichert",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen"
 }

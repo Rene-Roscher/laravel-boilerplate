@@ -1,0 +1,26 @@
+{
+    "settings": "Deine Einstellungen",
+    "settingsDescription": "Verwalte Deine Einstellungen für Deine Organisations",
+
+    "organizationDetails": "Details der Organisation",
+    "organizationDetailsDescription": "Verwalte die Details Deiner Organisation, einschließlich Name und Avatar.",
+    "organizationName": "Name der Organisation",
+
+    "avatarUpload": "Avatar hochladen",
+    "deleteAvatar": "Löschen",
+
+    "members": "Mitglieder der Organisation",
+    "membersCollaboration": "Lade Mitglieder ein, zusammenzuarbeiten.",
+    "noMembers": "Keine Mitglieder gefunden",
+    "noMembersDescription": "Du hast noch keine Mitglieder in Deiner Organisation. Du kannst sie einladen, Deiner Organisation beizutreten.",
+
+    "inviteMember": "Mitglied einladen",
+    "inviteMemberDescription": "Lade Mitglieder in Deine Organisation ein, indem Du ihre E-Mail-Adressen eingibst. Sie erhalten eine E-Mail-Einladung, Deiner Organisation beizutreten.",
+    "role": "Rolle",
+
+    "manageMember": "Mitglied verwalten",
+    "manageMemberDescription": "Verwalte die Rolle des Mitglieds in Deiner Organisation. Du kannst ihre Rolle ändern oder sie aus Deiner Organisation entfernen.",
+
+    "pendingInvitations": "Ausstehende Einladungen",
+    "pendingInvitationsDescription": "Alle ausstehenden Einladungen, Deiner Organisation beizutreten, werden hier aufgelistet. Du kannst ausstehende Einladungen bei Bedarf stornieren."
+}

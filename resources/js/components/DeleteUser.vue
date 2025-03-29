@@ -71,7 +71,7 @@ const closeModal = () => {
 
                         <DialogFooter class="gap-2">
                             <DialogClose as-child>
-                                <Button variant="secondary" @click="closeModal">{{ __('settings.profile.cancelButton') }}</Button>
+                                <Button variant="secondary" @click="closeModal">{{ __('cancel') }}</Button>
                             </DialogClose>
 
                             <Button variant="destructive" :disabled="form.processing">

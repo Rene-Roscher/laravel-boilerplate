@@ -27,6 +27,7 @@ Route::group([
 
             Route::post('/invite-user', [OrganizationUserController::class, 'inviteUser'])->name('organization.user.invite');
             Route::post('/detach-user', [OrganizationUserController::class, 'detachUser'])->name('organization.user.detach');
+            Route::patch('/update-user', [OrganizationUserController::class, 'updateUser'])->name('organization.user.update');
             Route::post('/delete-invitation', [OrganizationUserController::class, 'deleteInvitation'])->name('organization.user.invitation.delete');
         });
 

@@ -1,21 +1,35 @@
 <script setup lang="ts">
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import InputError from '@/components/InputError.vue';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
+import {Button} from '@/components/ui/button';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle
+} from '@/components/ui/dialog';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import {Input} from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
 import XDataState from '@/components/XDataState.vue';
-import { getInitials } from '@/composables/useInitials';
+import {getInitials} from '@/composables/useInitials';
 import AppLayout from '@/layouts/AppLayout.vue';
 import OrganizationLayout from '@/layouts/organization/Layout.vue';
-import { type BreadcrumbItem, Organization, OrganizationRole, User } from '@/types';
-import { Head, useForm } from '@inertiajs/vue3';
-import { Ellipsis, Trash } from 'lucide-vue-next';
-import { ref } from 'vue';
+import {type BreadcrumbItem, Organization, OrganizationRole, User} from '@/types';
+import {Head, useForm} from '@inertiajs/vue3';
+import {Ellipsis, Settings, Trash} from 'lucide-vue-next';
+import {computed, ref} from 'vue';
 
 interface Props {
     organization: Organization;
@@ -34,8 +48,8 @@ const organization = props.organization as Organization;
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'organization.navigation.breadcrumb.users',
-        href: route('organization.users.show', { organization }),
+        title: 'organization.navigation.breadcrumb.members',
+        href: route('organization.users.show', {organization}),
     },
 ];
 
@@ -44,7 +58,7 @@ const detachUser = (user: User) => {
         user_id: user.id,
     });
 
-    deleteMemberForm.post(route('organization.user.detach', { organization }), {
+    deleteMemberForm.post(route('organization.user.detach', {organization}), {
         preserveScroll: true,
         preserveState: false,
     });
@@ -55,7 +69,7 @@ const deleteInvitation = (invitation) => {
         invitation_id: invitation.id,
     });
 
-    deleteInvitationForm.post(route('organization.user.invitation.delete', { organization }), {
+    deleteInvitationForm.post(route('organization.user.invitation.delete', {organization}), {
         preserveScroll: true,
         preserveState: false,
     });
@@ -68,31 +82,61 @@ const inviteForm = useForm({
 });
 
 const submitInvite = () => {
-    inviteForm.post(route('organization.user.invite', { organization }), {
+    inviteForm.post(route('organization.user.invite', {organization}), {
         onSuccess: () => {
             showInviteDialog.value = false;
             inviteForm.reset();
-        }
+        },
     });
 };
+
+const manageMember = ref<User>(null);
+const manageMemberForm = useForm({
+    user_id: null,
+    role: '',
+});
+
+const submitManageMember = () => {
+    manageMemberForm.patch(route('organization.user.update', {organization}), {
+        onSuccess: () => {
+            manageMemberForm.reset();
+            manageMember.value = null;
+        },
+    });
+};
+
+const setManageMember = (user: User) => {
+    manageMember.value = user;
+    manageMemberForm.role = user.membership.role;
+    manageMemberForm.user_id = user.id;
+};
+
+const showManageDialog = computed({
+    get: () => !!manageMember.value,
+    set: (value) => {
+        if (!value) {
+            manageMember.value = null;
+        }
+    }
+});
 </script>
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
-        <Head :title="__('organization.profile.profileSettings')" />
+        <Head :title="__('organization.profile.settings')" />
 
         <OrganizationLayout :organization="organization">
             <div class="flex flex-col space-y-6">
                 <x-data-state
                     :show="users.length > 0 || invitations.length > 0"
-                    :empty-title="__('No members found')"
-                    :empty-description="__('You don\'t have any members in your organization yet. You can invite them to join your organization.')"
+                    :empty-title="__('organization.profile.noMembers')"
+                    :empty-description="__('organization.profile.noMembersDescription')"
                     class="space-y-6"
                 >
                     <HeadingSmall
                         v-if="users.length > 0"
-                        :title="__('Organization Members')"
-                        :description="__('You don\'t have any members in your organization yet. You can invite them to join your organization.')"
+                        :title="__('organization.profile.members')"
+                        :description="__('organization.profile.membersCollaboration')"
                     />
                     <div v-if="users.length > 0" class="space-y-6 rounded-lg bg-accent p-4">
                         <div v-for="(user, i) in users" :key="i" class="flex items-center">
@@ -125,6 +169,12 @@ const submitInvite = () => {
                                     <DropdownMenuContent align="start">
                                         <DropdownMenuGroup>
                                             <DropdownMenuItem :as-child="true">
+                                                <button class="block w-full cursor-pointer" @click.prevent="() => setManageMember(user)">
+                                                    <Settings class="mr-2 h-4 w-4" />
+                                                    Manage
+                                                </button>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem :as-child="true">
                                                 <button class="block w-full cursor-pointer text-destructive" @click.prevent="() => detachUser(user)">
                                                     <Trash class="mr-2 h-4 w-4" />
                                                     Delete
@@ -137,14 +187,14 @@ const submitInvite = () => {
                         </div>
                     </div>
 
+                    <div class="mt-5">
+                        <Button variant="default" @click.prevent="showInviteDialog = true">{{ __('organization.profile.inviteMember') }} </Button>
+                    </div>
+
                     <template v-if="invitations.length > 0">
                         <HeadingSmall
-                            :title="__('Pending Invitations')"
-                            :description="
-                                __(
-                                    'It\'s easier in a team, which is why we make it easier for you to work together by allowing you to invite your members directly to your organization.',
-                                )
-                            "
+                            :title="__('organization.profile.pendingInvitations')"
+                            :description="__('organization.profile.pendingInvitationsDescription')"
                         />
                         <div class="mt-5 space-y-6 rounded-lg bg-accent p-4">
                             <div v-for="(invitation, i) in invitations" :key="i" class="flex items-center">
@@ -159,7 +209,12 @@ const submitInvite = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <Button variant="ghost" size="icon" class="h-9 w-9 text-destructive" @click.prevent="() => deleteInvitation(invitation)">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        class="h-9 w-9 text-destructive"
+                                        @click.prevent="() => deleteInvitation(invitation)"
+                                    >
                                         <Trash class="h-5 w-5" />
                                     </Button>
                                 </div>
@@ -167,12 +222,8 @@ const submitInvite = () => {
                         </div>
                     </template>
 
-                    <div class="mt-5">
-                        <Button variant="default" @click.prevent="showInviteDialog = true">{{ __('Invite Member') }} </Button>
-                    </div>
-
                     <template #emptyActions>
-                        <Button variant="default" @click.prevent="showInviteDialog = true">{{ __('Invite Member') }} </Button>
+                        <Button variant="default" @click.prevent="showInviteDialog = true">{{ __('organization.profile.inviteMember') }} </Button>
                     </template>
                 </x-data-state>
             </div>
@@ -182,19 +233,19 @@ const submitInvite = () => {
             <DialogContent>
                 <form @submit.prevent="submitInvite" class="space-y-6">
                     <DialogHeader class="space-y-3">
-                        <DialogTitle>{{ __('Invite Member') }}</DialogTitle>
-                        <DialogDescription>{{ __('') }}</DialogDescription>
+                        <DialogTitle>{{ __('organization.profile.inviteMember') }}</DialogTitle>
+                        <DialogDescription>{{ __('organization.profile.inviteMemberDescription') }}</DialogDescription>
                     </DialogHeader>
 
                     <div class="grid gap-2">
-                        <Label for="password" class="sr-only">{{ __('E-Mail') }}</Label>
-                        <Input ref="passwordInput" v-model="inviteForm.email" type="email" placeholder="example-user@example.com" />
+                        <Label for="email">{{ __('E-Mail') }}</Label>
+                        <Input id="email" v-model="inviteForm.email" type="email" placeholder="example-user@example.com" />
                         <InputError :message="inviteForm.errors.email" />
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="password" class="sr-only">{{ __('Role') }}</Label>
-                        <Select v-model="inviteForm.role">
+                        <Label for="role">{{ __('organization.profile.role') }}</Label>
+                        <Select id="role" v-model="inviteForm.role">
                             <SelectTrigger>
                                 <SelectValue placeholder="Select a Role" />
                             </SelectTrigger>
@@ -214,11 +265,63 @@ const submitInvite = () => {
                     <DialogFooter class="gap-2">
                         <DialogClose as-child>
                             <Button variant="secondary" @click="showInviteDialog = false">
+                                {{ __('cancel') }}
+                            </Button>
+                        </DialogClose>
+
+                        <Button variant="default" :disabled="inviteForm.processing">
+                            {{ __('confirm') }}
+                        </Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
+
+        <Dialog v-model:open="showManageDialog">
+            <DialogContent>
+                <form @submit.prevent="submitManageMember" class="space-y-6">
+                    <DialogHeader class="space-y-3">
+                        <DialogTitle>{{ __('organization.profile.manageMember') }}</DialogTitle>
+                        <DialogDescription>{{ __('organization.profile.manageMemberDescription') }}</DialogDescription>
+                    </DialogHeader>
+
+                    <div class="grid gap-2">
+                        <Label for="email">{{ __('Name') }}</Label>
+                        <Input disabled ref="passwordInput" :model-value="manageMember?.name" type="email" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="email">{{ __('E-Mail') }}</Label>
+                        <Input disabled ref="passwordInput" :model-value="manageMember?.email" type="email" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="password">{{ __('organization.profile.role') }}</Label>
+                        <Select v-model="manageMemberForm.role">
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select a Role" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <template v-for="role in roles" :key="role.id">
+                                        <SelectItem :value="role.id">
+                                            {{ role.label }}
+                                        </SelectItem>
+                                    </template>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                        <InputError :message="manageMemberForm.errors.role" />
+                    </div>
+
+                    <DialogFooter class="gap-2">
+                        <DialogClose as-child>
+                            <Button variant="secondary" @click="manageMember = null">
                                 {{ __('features.confirms-password.cancel') }}
                             </Button>
                         </DialogClose>
 
-                        <Button variant="default" :disabled="inviteForm.processing" @click="submitInvite">
+                        <Button variant="default" :disabled="manageMemberForm.processing">
                             {{ __('features.confirms-password.confirm') }}
                         </Button>
                     </DialogFooter>

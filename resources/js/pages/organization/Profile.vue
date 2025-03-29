@@ -81,11 +81,11 @@ const updatePhotoPreview = () => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
-        <Head :title="__('organization.profile.profileSettings')" />
+        <Head :title="__('organization.profile.settings')" />
 
         <OrganizationLayout :organization="organization">
             <div class="flex flex-col space-y-6">
-                <HeadingSmall :title="__('organization.profile.profileInformation')" :description="__('organization.profile.updateNameEmail')" />
+                <HeadingSmall :title="__('organization.profile.organizationDetails')" :description="__('organization.profile.organizationDetailsDescription')" />
 
                 <form @submit.prevent="submit" class="space-y-6">
                     <div class="flex items-center gap-4">
@@ -120,7 +120,7 @@ const updatePhotoPreview = () => {
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="name">{{ __('organization.profile.name') }}</Label>
+                        <Label for="name">{{ __('organization.profile.organizationName') }}</Label>
                         <Input
                             id="name"
                             class="mt-1 block w-full"
@@ -133,7 +133,7 @@ const updatePhotoPreview = () => {
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button :disabled="form.processing">{{ __('organization.profile.save') }}</Button>
+                        <Button :disabled="form.processing">{{ __('save') }}</Button>
 
                         <Transition
                             enter-active-class="transition ease-in-out"
@@ -142,7 +142,7 @@ const updatePhotoPreview = () => {
                             leave-to-class="opacity-0"
                         >
                             <p v-show="form.recentlySuccessful" class="text-sm text-neutral-600">
-                                {{ __('organization.profile.saved') }}
+                                {{ __('saved') }}
                             </p>
                         </Transition>
                     </div>
