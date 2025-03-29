@@ -4,5 +4,10 @@
     "save": "Speichern",
     "saved": "Gespeichert",
     "cancel": "Abbrechen",
-    "confirm": "Bestätigen"
+    "confirm": "Bestätigen",
+    "create": "Erstellen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "close": "Schließen"
 }

@@ -34,6 +34,6 @@ const organizationStore = useOrganization();
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
     <DropdownMenuItem :as-child="true">
-        <Button variant="secondary" class="w-full" @click="organizationStore.toggleShowCreateOrganization">Create Organization</Button>
+        <Button variant="secondary" class="w-full" @click="organizationStore.toggleShowCreateOrganization">{{ __('organization.createOrganization') }}</Button>
     </DropdownMenuItem>
 </template>

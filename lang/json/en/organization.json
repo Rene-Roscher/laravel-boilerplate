@@ -1,0 +1,7 @@
+{
+    "createOrganization": "Create Organization",
+    "createDialogTitle": "Create Organization",
+    "createDialogDescription": "Create a new organization to manage your projects and members.",
+    "name": "Organization Name",
+    "namePlaceholder": "Enter organization name, e.g. My Company Inc."
+}

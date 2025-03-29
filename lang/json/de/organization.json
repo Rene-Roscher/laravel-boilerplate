@@ -1,0 +1,7 @@
+{
+    "createOrganization": "Organisation erstellen",
+    "createDialogTitle": "Organisation erstellen",
+    "createDialogDescription": "Erstelle eine neue Organisation, um Deine Projekte und Mitglieder zu verwalten.",
+    "name": "Name der Organisation",
+    "namePlaceholder": "Gib den Namen der Organisation ein, z.B. Mustermann GmbH"
+}

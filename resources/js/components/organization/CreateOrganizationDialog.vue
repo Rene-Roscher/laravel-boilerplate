@@ -5,7 +5,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useOrganization } from '@/stores/organizationStore';
-import { useForm } from '@inertiajs/vue3';
+import {router, useForm} from '@inertiajs/vue3';
 
 const form = useForm({
     name: '',
@@ -15,11 +15,10 @@ const store = useOrganization();
 
 const submit = () => {
     form.post(route('organization.store'), {
-        preserveState: false,
-        preserveScroll: false,
         onSuccess: () => {
             form.reset();
             store.showCreateOrganization = false
+            router.reload()
         },
     });
 };
@@ -30,22 +29,22 @@ const submit = () => {
         <DialogContent>
             <div class="space-y-6">
                 <DialogHeader class="space-y-3">
-                    <DialogTitle>Create Organization</DialogTitle>
-                    <DialogDescription>Create a new Organization</DialogDescription>
+                    <DialogTitle>{{ __('organization.createDialogTitle') }}</DialogTitle>
+                    <DialogDescription>{{ __('organization.createDialogDescription') }}</DialogDescription>
                 </DialogHeader>
 
                 <div class="grid gap-2">
-                    <Label for="password" class="sr-only">Org-Name</Label>
-                    <Input ref="passwordInput" v-model="form.name" placeholder="New Organization Name" @keyup.enter="submit" />
+                    <Label for="password" class="sr-only">{{ __('organization.name') }}</Label>
+                    <Input ref="passwordInput" v-model="form.name" :placeholder="__('organization.namePlaceholder')" @keyup.enter="submit" />
                     <InputError :message="form.errors.name" />
                 </div>
 
                 <DialogFooter class="gap-2">
                     <DialogClose as-child>
-                        <Button variant="secondary">Close</Button>
+                        <Button variant="secondary">{{ __('close') }}</Button>
                     </DialogClose>
 
-                    <Button variant="default" :disabled="form.processing" @click="submit"> Create</Button>
+                    <Button variant="default" :disabled="form.processing" @click="submit">{{ __('create') }}</Button>
                 </DialogFooter>
             </div>
         </DialogContent>
