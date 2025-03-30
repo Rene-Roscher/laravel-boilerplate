@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Organization;
 use App\Enums\OrganizationRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Organization\Organization;
+use App\Models\User;
 use App\Notifications\Organization\OrganizationInvitationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -12,6 +13,10 @@ use Inertia\Inertia;
 
 class OrganizationUserController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Organization::class, 'organization');
+    }
 
     public function show(Organization $organization)
     {
@@ -86,7 +91,16 @@ class OrganizationUserController extends Controller
             ],
         ]);
 
-        $organization->users()->detach($request->user_id);
+        $userId = $request->user_id;
+
+        $organization->users()->detach($userId);
+
+        // Ensure the user is removed from the organization
+        if (User::query()->where('id', $userId)->where('current_organization_id', $organization->id)->exists()) {
+            User::query()->where('id', $userId)->update([
+                'current_organization_id' => optional(Organization::query()->where('user_id', $userId)->where('is_default', true)->first())->id ?? null,
+            ]);
+        }
 
         return back();
     }

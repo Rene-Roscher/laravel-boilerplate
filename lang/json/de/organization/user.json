@@ -1,0 +1,7 @@
+{
+    "deleteInvitation": "Einladung löschen",
+    "deleteInvitationDescription": "Möchtest Du die Einladung an :email wirklich löschen?",
+
+    "deleteMember": "Mitglied entfernen",
+    "deleteMemberDescription": "Möchtest Du :name wirklich aus Deiner Organisation entfernen?"
+}

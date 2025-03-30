@@ -30,6 +30,8 @@ import {type BreadcrumbItem, Organization, OrganizationRole, User} from '@/types
 import {Head, useForm} from '@inertiajs/vue3';
 import {Ellipsis, Settings, Trash} from 'lucide-vue-next';
 import {computed, ref} from 'vue';
+import {useConfirmationStore} from "@/stores/confirmationStore";
+import {trans} from "laravel-vue-i18n";
 
 interface Props {
     organization: Organization;
@@ -46,6 +48,8 @@ interface Props {
 const props = defineProps<Props>();
 const organization = props.organization as Organization;
 
+const confirmStore = useConfirmationStore()
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'organization.navigation.breadcrumb.members',
@@ -53,7 +57,14 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const detachUser = (user: User) => {
+const detachUser = async (user: User) => {
+    if (!await confirmStore.openConfirmationDialog({
+        title: trans('organization.user.deleteMember'),
+        message: trans('organization.user.deleteMemberDescription', {name: user.name}),
+    })) {
+        return;
+    }
+
     const deleteMemberForm = useForm({
         user_id: user.id,
     });
@@ -64,7 +75,14 @@ const detachUser = (user: User) => {
     });
 };
 
-const deleteInvitation = (invitation) => {
+const deleteInvitation = async (invitation) => {
+    if (!await confirmStore.openConfirmationDialog({
+        title: trans('organization.user.deleteInvitation'),
+        message: trans('organization.user.deleteInvitationDescription', {email: invitation.email}),
+    })) {
+        return;
+    }
+
     const deleteInvitationForm = useForm({
         invitation_id: invitation.id,
     });
