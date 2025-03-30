@@ -1,23 +1,22 @@
 @component('mail::message')
-{{ __('You have been invited to join the **:name** organization!', ['name' => $invitation->organization->name]) }}
+{{ __('organization.invited_title', ['name' => $invitation->organization->name]) }}
 
 @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::registration()))
-{{ __('If you do not have an account, you may create one by clicking the button below. After creating an account, you may click the invitation acceptance button in this email to accept the organization invitation:') }}
+{{ __('organization.no_account_instructions') }}
 
 @component('mail::button', ['url' => route('register')])
-{{ __('Create Account') }}
+{{ __('organization.create_account') }}
 @endcomponent
 
-{{ __('If you already have an account, you may accept this invitation by clicking the button below:') }}
+{{ __('organization.has_account_instructions') }}
 
 @else
-{{ __('You may accept this invitation by clicking the button below:') }}
+{{ __('organization.accept_invitation_direct') }}
 @endif
 
-
 @component('mail::button', ['url' => $acceptUrl])
-{{ __('Accept Invitation') }}
+{{ __('organization.accept_invitation') }}
 @endcomponent
 
-{{ __('If you did not expect to receive an invitation to this organization, you may discard this email.') }}
+{{ __('organization.unexpected_invitation') }}
 @endcomponent

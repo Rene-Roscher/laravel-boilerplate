@@ -41,11 +41,11 @@ class OrganizationUserController extends Controller
                 'email',
                 function ($attribute, $value, $fail) use ($organization) {
                     if ($organization->users()->where('email', $value)->exists()) {
-                        return $fail(__('User already exists in the organization.'));
+                        return $fail(__('organization.user_exists'));
                     }
 
                     if ($organization->invitations()->where('email', $value)->exists()) {
-                        return $fail(__('This email is already invited.'));
+                        return $fail(__('organization.invitation_exists'));
                     }
                 },
             ],
