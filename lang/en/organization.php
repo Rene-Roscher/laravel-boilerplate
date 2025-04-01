@@ -11,4 +11,5 @@ return [
     'accept_invitation_direct' => 'You may accept this invitation by clicking the button below:',
     'accept_invitation' => 'Accept Invitation',
     'unexpected_invitation' => 'If you did not expect to receive an invitation to this organization, you may discard this email.',
+    'not_authorized_to_accept_invitation' => 'You are not authorized to accept this invitation.',
 ];

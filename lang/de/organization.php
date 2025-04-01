@@ -11,4 +11,5 @@ return [
     'accept_invitation_direct' => 'Du kannst diese Einladung durch Klick auf den Button unten annehmen:',
     'accept_invitation' => 'Einladung annehmen',
     'unexpected_invitation' => 'Falls Du keine Einladung zu dieser Organisation erwartet hast, kannst Du diese E-Mail einfach ignorieren.',
+    'not_authorized_to_accept_invitation' => 'Du bist nicht berechtigt, diese Einladung anzunehmen.'
 ];

@@ -22,7 +22,7 @@ class OrganizationInvitationController extends Controller
         $organization = $invitation->organization;
 
         if (strtolower($invitation->email) !== strtolower($user->email)) {
-            return redirect()->route('dashboard')->with('error', __('You are not authorized to accept this invitation.'));
+            return redirect()->route('dashboard')->with('error', __('organization.not_authorized_to_accept_invitation'));
         }
 
         if (!$organization->users()->where('user_id', $user->id)->exists()) {
