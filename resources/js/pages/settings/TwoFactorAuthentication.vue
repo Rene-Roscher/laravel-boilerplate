@@ -169,7 +169,7 @@ const disableTwoFactorAuthentication = () => {
                             </p>
                         </div>
 
-                        <div class="mt-4 inline-block rounded-lg bg-white p-2" v-html="qrCode" />
+                        <div class="mt-4 inline-block rounded-lg light:bg-accent dark:bg-white p-2 text-accent" v-html="qrCode" />
 
                         <div v-if="setupKey" class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
                             <p class="font-semibold">{{ __('settings.two-factor.setupKey') }} <span v-html="setupKey"></span></p>
@@ -184,12 +184,6 @@ const disableTwoFactorAuthentication = () => {
                                 :length="6"
                                 :placeholder="'○'"
                             />
-
-<!--                            <PinInput id="pin-input" v-model="confirmationForm.code" placeholder="○" otp type="number">-->
-<!--                                <PinInputGroup>-->
-<!--                                    <PinInputSlot v-for="(id, index) in 6" :key="id" :index="index" />-->
-<!--                                </PinInputGroup>-->
-<!--                            </PinInput>-->
 
                             <InputError :message="confirmationForm.errors.code" class="mt-2" />
                         </div>

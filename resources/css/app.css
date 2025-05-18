@@ -6,6 +6,7 @@
 @source '../../storage/framework/views/*.php';
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant light (&:not(.dark *));
 
 @theme {
   --font-sans:
