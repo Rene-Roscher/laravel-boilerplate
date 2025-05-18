@@ -4,7 +4,7 @@ import InputError from '@/components/InputError.vue';
 import XConfirmsPassword from '@/components/XConfirmsPassword.vue';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { PinInput, PinInputGroup, PinInputInput } from '@/components/ui/pin-input';
+import { PinInput, PinInputGroup, PinInputSlot } from '@/components/ui/pin-input';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type SharedData } from '@/types';
@@ -179,7 +179,7 @@ const disableTwoFactorAuthentication = () => {
 
                             <PinInput id="pin-input" v-model="confirmationForm.code" placeholder="○" otp type="number">
                                 <PinInputGroup>
-                                    <PinInputInput v-for="(id, index) in 6" :key="id" :index="index" />
+                                    <PinInputSlot v-for="(id, index) in 6" :key="id" :index="index" />
                                 </PinInputGroup>
                             </PinInput>
 
@@ -193,7 +193,7 @@ const disableTwoFactorAuthentication = () => {
                             :description="__('settings.two-factor.recoveryCodesDescription')"
                         />
 
-                        <div class="mt-4 grid max-w-xl gap-1 rounded-lg bg-accent bg-gray-100 px-4 py-4 font-mono text-sm dark:text-gray-100">
+                        <div class="mt-4 grid max-w-xl gap-1 rounded-lg bg-accent px-4 py-4 font-mono text-sm dark:text-gray-100">
                             <div v-for="code in recoveryCodes" :key="code">
                                 {{ code }}
                             </div>
