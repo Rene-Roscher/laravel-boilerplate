@@ -21,7 +21,7 @@ defineProps<Props>();
     </DropdownMenuLabel>
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
-        <AppearanceTabs class="flex items-center justify-between w-full !bg-transparent" :with-label="false"/>
+        <AppearanceTabs class="flex items-center justify-between w-full bg-transparent!" :with-label="false"/>
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
