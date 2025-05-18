@@ -9,11 +9,12 @@ import AuthLayout from '@/layouts/AuthLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 import { nextTick, ref } from 'vue';
+import PinCodeInput from '@/components/PinCodeInput.vue';
 
 const recovery = ref<boolean>(false);
 
 const form = useForm({
-    code: [],
+    code: '',
     recovery_code: '',
 });
 
@@ -28,7 +29,7 @@ const toggleRecovery = async () => {
 
     if (recovery.value) {
         recoveryCodeInput.value?.focus();
-        form.code = [];
+        form.code = '';
     } else {
         codeInput.value?.focus();
         form.recovery_code = '';
@@ -36,9 +37,7 @@ const toggleRecovery = async () => {
 };
 
 const submit = () => {
-    form.transform((data) => ({
-        code: data.code.filter(Boolean).join(''),
-    })).post(route('two-factor.login'), {
+    form.post(route('two-factor.login'), {
         onFinish: () => {
             form.reset();
         },
@@ -68,16 +67,11 @@ const submit = () => {
                         </ActionText>
                     </div>
                     <template v-if="!recovery">
-                        <PinInput ref="pinInput" v-model="form.code" placeholder="○" otp type="number">
-                            <PinInputGroup>
-                                <template v-for="(id, index) in 6" :key="id">
-                                    <PinInputSlot class="rounded-md border" :index="index" />
-                                    <template v-if="index !== 5">
-                                        <PinInputSeparator />
-                                    </template>
-                                </template>
-                            </PinInputGroup>
-                        </PinInput>
+                        <PinCodeInput
+                            class="justify-center"
+                            ref="pinInput"
+                            v-model="form.code"
+                        />
                         <InputError :message="form.errors.code" />
                     </template>
                     <template v-else>

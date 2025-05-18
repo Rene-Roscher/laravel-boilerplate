@@ -10,6 +10,7 @@ import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/vue3';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import PinCodeInput from '@/components/PinCodeInput.vue';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -35,7 +36,7 @@ const setupKey = ref(null);
 const recoveryCodes = ref([]);
 
 const confirmationForm = useForm({
-    code: [],
+    code: '',
 });
 
 const twoFactorEnabled = computed(() => !enabling.value && page.props.auth.user?.two_factor_enabled);
@@ -96,9 +97,9 @@ const showRecoveryCodes = () => {
 
 const confirmTwoFactorAuthentication = () => {
     confirmationForm
-        .transform((data) => ({
-            code: data.code.filter(Boolean).join(''),
-        }))
+        // .transform((data) => ({
+        //     code: data.code.filter(Boolean).join(''),
+        // }))
         .post(route('two-factor.confirm'), {
             errorBag: 'confirmTwoFactorAuthentication',
             preserveScroll: true,
@@ -177,11 +178,18 @@ const disableTwoFactorAuthentication = () => {
                         <div v-if="confirming" class="mt-4">
                             <Label htmlFor="code" :value="__('settings.two-factor.Code')" />
 
-                            <PinInput id="pin-input" v-model="confirmationForm.code" placeholder="○" otp type="number">
-                                <PinInputGroup>
-                                    <PinInputSlot v-for="(id, index) in 6" :key="id" :index="index" />
-                                </PinInputGroup>
-                            </PinInput>
+                            <PinCodeInput
+                                ref="pinInput"
+                                v-model="confirmationForm.code"
+                                :length="6"
+                                :placeholder="'○'"
+                            />
+
+<!--                            <PinInput id="pin-input" v-model="confirmationForm.code" placeholder="○" otp type="number">-->
+<!--                                <PinInputGroup>-->
+<!--                                    <PinInputSlot v-for="(id, index) in 6" :key="id" :index="index" />-->
+<!--                                </PinInputGroup>-->
+<!--                            </PinInput>-->
 
                             <InputError :message="confirmationForm.errors.code" class="mt-2" />
                         </div>
