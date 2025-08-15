@@ -12,6 +12,7 @@
         "php": "^8.2",
         "archtechx/enums": "^1.1",
         "inertiajs/inertia-laravel": "^2.0",
+        "kra8/laravel-snowflake": "^2.4",
         "laravel/fortify": "^1.25",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",

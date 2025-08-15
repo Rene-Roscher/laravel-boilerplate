@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasMedia;
 use App\Models\Traits\HasOrganizations;
-use App\Models\Traits\HasShortableUuid;
+use App\Models\Traits\HasShortIdentifier;
 use BaconQrCode\Renderer\Color\Rgb;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -13,10 +13,10 @@ use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Kra8\Snowflake\HasShortflakePrimary;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
@@ -29,7 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    use HasUuids, HasShortableUuid;
+    use HasShortflakePrimary, HasShortIdentifier;
     use TwoFactorAuthenticatable;
     use HasRoles;
     use HasMedia;

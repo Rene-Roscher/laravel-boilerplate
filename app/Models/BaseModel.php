@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Kra8\Snowflake\HasShortflakePrimary;
 
 /**
  * @mixin IdeHelperBaseModel
  */
 class BaseModel extends Model
 {
-    use HasUuids;
+    use HasShortflakePrimary;
 }

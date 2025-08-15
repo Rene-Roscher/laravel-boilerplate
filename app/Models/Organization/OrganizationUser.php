@@ -2,7 +2,7 @@
 
 namespace App\Models\Organization;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Kra8\Snowflake\HasShortflakePrimary;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -10,5 +10,5 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class OrganizationUser extends Pivot
 {
-    use HasUuids;
+    use HasShortflakePrimary;
 }

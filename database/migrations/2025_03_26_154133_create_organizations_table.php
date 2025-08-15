@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('organizations', function (Blueprint $table) {
-            $table->uuid('id')->primary()->unique();
-            $table->foreignUuid('user_id')->index();
+            $table->id();
+            $table->foreignId('user_id')->index();
             $table->string('name');
             $table->boolean('is_default')->default(false); // Identifies the default organization for a user
             $table->string('avatar', 2048)->nullable();
@@ -21,9 +21,9 @@ return new class extends Migration
         });
 
         Schema::create('organization_user', function (Blueprint $table) {
-            $table->uuid('id')->primary()->unique();
-            $table->foreignUuid('organization_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->id();
+            $table->foreignId('organization_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('role')->nullable();
             $table->timestamps();
 
@@ -31,8 +31,8 @@ return new class extends Migration
         });
 
         Schema::create('organization_invitations', function (Blueprint $table) {
-            $table->uuid('id')->primary()->unique();
-            $table->foreignUuid('organization_id')->constrained()->cascadeOnDelete();
+            $table->id();
+            $table->foreignId('organization_id')->constrained()->cascadeOnDelete();
             $table->string('email');
             $table->string('role')->nullable();
             $table->timestamps();
