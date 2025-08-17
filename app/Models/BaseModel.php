@@ -8,7 +8,7 @@ use Kra8\Snowflake\HasShortflakePrimary;
 /**
  * @mixin IdeHelperBaseModel
  */
-class BaseModel extends Model
+abstract class BaseModel extends Model
 {
     use HasShortflakePrimary;
 }
