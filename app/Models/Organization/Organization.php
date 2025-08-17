@@ -35,6 +35,19 @@ class Organization extends BaseModel
         'avatar_url',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'id' => 'string',
+        'user_id' => 'string',
+        'is_default' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function avatarUrl(): Attribute
     {
         return Attribute::make(
