@@ -20,6 +20,7 @@ class Organization extends BaseModel
 
     protected $fillable = [
         'name',
+        'user_id',
         'is_default',
         'avatar',
     ];

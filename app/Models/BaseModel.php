@@ -11,4 +11,13 @@ use Kra8\Snowflake\HasShortflakePrimary;
 abstract class BaseModel extends Model
 {
     use HasShortflakePrimary;
+
+    public $incrementing = false;
+    protected $keyType = 'int';
+
+    /**
+     * Fields that are not mass assignable.
+     */
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+
 }
