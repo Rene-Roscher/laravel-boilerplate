@@ -57,8 +57,6 @@ class Organization extends BaseModel
 
     /**
      * Get the owner of the organization.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner(): BelongsTo
     {
@@ -67,8 +65,6 @@ class Organization extends BaseModel
 
     /**
      * Get all the organization's users including its owner.
-     *
-     * @return \Illuminate\Support\Collection
      */
     public function allUsers(): Collection
     {
@@ -77,8 +73,6 @@ class Organization extends BaseModel
 
     /**
      * Get all the users that belong to the organization.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users(): BelongsToMany
     {
@@ -90,51 +84,36 @@ class Organization extends BaseModel
 
     /**
      * Determine if the given user belongs to the organization.
-     *
-     * @param \App\Models\User $user
-     * @return bool
      */
     public function hasUser(
         User $user
-    ): bool
-    {
+    ): bool {
         return $this->users->contains($user) || $user->ownsTeam($this);
     }
 
     /**
      * Determine if the given email address belongs to a user on the organization.
-     *
-     * @param  string  $email
-     * @return bool
      */
     public function hasUserWithEmail(
         string $email
-    ): bool
-    {
+    ): bool {
         return $this->allUsers()->contains(
-            fn($user) => $user->email === $email
+            fn ($user) => $user->email === $email
         );
     }
 
     /**
      * Determine if the given user has the given permission on the organization.
-     *
-     * @param \App\Models\User $user
-     * @param  string  $permission
-     * @return bool
      */
     public function userHasPermission(
         User $user,
         string $permission
-    ): bool
-    {
+    ): bool {
         return $user->hasOrganizationPermission($this, $permission);
     }
 
     /**
      * Get all the pending user invitations for the organization.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function invitations(): HasMany
     {
@@ -143,14 +122,10 @@ class Organization extends BaseModel
 
     /**
      * Remove the given user from the organization.
-     *
-     * @param \App\Models\User $user
-     * @return void
      */
     public function removeUser(
         User $user
-    ): void
-    {
+    ): void {
         if ($user->current_organization_id === $this->id) {
             $user->forceFill([
                 'current_organization_id' => null,
@@ -162,8 +137,6 @@ class Organization extends BaseModel
 
     /**
      * Purge all the organization's resources.
-     *
-     * @return void
      */
     public function purge(): void
     {
@@ -177,5 +150,4 @@ class Organization extends BaseModel
 
         $this->delete();
     }
-
 }
