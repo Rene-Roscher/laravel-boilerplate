@@ -53,4 +53,21 @@ export default defineConfig({
             origin: /https?:\/\/([A-Za-z0-9-\.]+)?(\.ddev\.site)(?::\d+)?$/,
         },
     } : {},
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'vendor': ['vue', '@inertiajs/vue3', 'pinia'],
+                    'utils': ['lodash', 'axios'],
+                    'ui-extras': ['vue-tippy', 'reka-ui']
+                }
+            }
+        },
+        chunkSizeWarningLimit: 500,
+        minify: 'terser',
+        terserOptions: {
+            compress: { drop_console: true, drop_debugger: true, passes: 2 },
+            format: { comments: false },
+        },
+    }
 });
