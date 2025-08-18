@@ -3,6 +3,9 @@
 return [
     'user_exists' => 'Dieser Benutzer ist bereits Teil der Organisation.',
     'invitation_exists' => 'Diese E-Mail-Adresse wurde bereits eingeladen.',
+    'cannot_invite_self' => 'Du kannst dich nicht selbst einladen.',
+    'cannot_change_own_role' => 'Du kannst deine eigene Rolle nicht ändern.',
+    'too_many_invitations' => 'Zu viele Einladungen. Bitte versuche es in :seconds Sekunden erneut.',
     'invited_subject' => 'Du wurdest eingeladen, einer Organisation beizutreten',
     'invited_title' => 'Du wurdest eingeladen, der Organisation **:name** beizutreten!',
     'no_account_instructions' => 'Falls Du noch kein Konto hast, kannst Du eines erstellen, indem Du auf den Button unten klickst. Nachdem Du Dein Konto erstellt hast, kannst Du in dieser E-Mail auf den Button klicken, um die Einladung anzunehmen:',
@@ -11,5 +14,5 @@ return [
     'accept_invitation_direct' => 'Du kannst diese Einladung durch Klick auf den Button unten annehmen:',
     'accept_invitation' => 'Einladung annehmen',
     'unexpected_invitation' => 'Falls Du keine Einladung zu dieser Organisation erwartet hast, kannst Du diese E-Mail einfach ignorieren.',
-    'not_authorized_to_accept_invitation' => 'Du bist nicht berechtigt, diese Einladung anzunehmen.'
+    'not_authorized_to_accept_invitation' => 'Du bist nicht berechtigt, diese Einladung anzunehmen.',
 ];
