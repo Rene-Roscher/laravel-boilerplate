@@ -20,6 +20,7 @@
         "mcamara/laravel-localization": "^2.3",
         "mobiledetect/mobiledetectlib": "^4.8",
         "rene-roscher/laravel-i18n-json-converter": "^1.0",
+        "spatie/laravel-passkeys": "^1.2",
         "spatie/laravel-permission": "^6.16",
         "tightenco/ziggy": "^2.4"
     },

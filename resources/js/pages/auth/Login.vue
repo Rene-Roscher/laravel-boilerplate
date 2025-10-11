@@ -5,9 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { usePasskeys } from '@/composables/usePasskeys';
 import AuthBase from '@/layouts/AuthLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
-import { LoaderCircle } from 'lucide-vue-next';
+import { Key, LoaderCircle } from 'lucide-vue-next';
+import { onMounted, ref } from 'vue';
+import { toast } from 'vue-sonner';
 
 defineProps<{
     status?: string;
@@ -20,10 +24,27 @@ const form = useForm({
     remember: false,
 });
 
+const { browserSupported, isAuthenticating, authenticateWithPasskey, error } = usePasskeys();
+const showPasskeyButton = ref(false);
+
+onMounted(() => {
+    // Check if browser supports passkeys
+    if (browserSupported.value) {
+        showPasskeyButton.value = true;
+    }
+});
+
 const submit = () => {
     form.post(route('login'), {
         onFinish: () => form.reset('password'),
     });
+};
+
+const handlePasskeyLogin = async () => {
+    const success = await authenticateWithPasskey();
+    if (!success && error.value) {
+        toast.error(error.value);
+    }
 };
 </script>
 
@@ -82,6 +103,30 @@ const submit = () => {
                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
                     Log in
                 </Button>
+
+                <!-- Passkey login -->
+                <div v-if="showPasskeyButton" class="mt-4 space-y-4">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <Separator />
+                        </div>
+                        <div class="relative flex justify-center text-xs uppercase">
+                            <span class="bg-background px-2 text-muted-foreground">Or continue with</span>
+                        </div>
+                    </div>
+
+                    <Button
+                        type="button"
+                        variant="outline"
+                        class="w-full"
+                        @click="handlePasskeyLogin"
+                        :disabled="isAuthenticating"
+                    >
+                        <LoaderCircle v-if="isAuthenticating" class="mr-2 h-4 w-4 animate-spin" />
+                        <Key v-else class="mr-2 h-4 w-4" />
+                        Sign in with passkey
+                    </Button>
+                </div>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">

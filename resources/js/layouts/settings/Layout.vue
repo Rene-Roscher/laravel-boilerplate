@@ -19,6 +19,10 @@ const sidebarNavItems: NavItem[] = [
         href: route('user.appearance.edit'),
     },
     {
+        title: 'settings.navigation.sidebar.passkeys',
+        href: route('user.passkeys.index'),
+    },
+    {
         title: 'settings.navigation.sidebar.twoFactorAuthentication',
         href: route('user.two-factor-authentication.edit'),
     },

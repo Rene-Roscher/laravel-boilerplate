@@ -1,0 +1,170 @@
+<?php
+
+namespace App\Http\Controllers\Settings;
+
+use App\Http\Controllers\Controller;
+use App\Services\UserAgent;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Inertia\Response;
+use Spatie\LaravelPasskeys\Actions\GeneratePasskeyRegisterOptionsAction;
+use Spatie\LaravelPasskeys\Actions\StorePasskeyAction;
+use Spatie\LaravelPasskeys\Models\Passkey;
+
+class PasskeyController extends Controller
+{
+    /**
+     * Display the passkeys management page.
+     */
+    public function index(Request $request): Response
+    {
+        $user = $request->user();
+        $passkeys = $user->passkeys()
+            ->orderBy('last_used_at', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($passkey) {
+                return [
+                    'id' => $passkey->id,
+                    'name' => $passkey->name,
+                    'device_name' => $passkey->device_name,
+                    'device_type' => $passkey->device_type,
+                    'browser_name' => $passkey->browser_name,
+                    'operating_system' => $passkey->operating_system,
+                    'last_used_at' => $passkey->last_used_at?->toDateTimeString(),
+                    'created_at' => $passkey->created_at->toDateTimeString(),
+                    'is_recently_used' => $passkey->last_used_at?->isToday() ?? false,
+                ];
+            });
+
+        return Inertia::render('settings/Passkeys', [
+            'passkeys' => $passkeys,
+        ]);
+    }
+
+    /**
+     * Generate options for passkey registration.
+     */
+    public function generateOptions(Request $request, GeneratePasskeyRegisterOptionsAction $action): JsonResponse
+    {
+        $options = $action->execute($request->user());
+
+        return response()->json($options);
+    }
+
+    /**
+     * Store a new passkey.
+     */
+    public function store(Request $request, StorePasskeyAction $action): JsonResponse
+    {
+        $validated = $request->validate([
+            'passkey' => 'required|json',
+            'options' => 'required|json',
+            'name' => 'nullable|string|max:255',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Parse user agent data
+            $userAgentService = app(UserAgent::class);
+            $userAgentData = $userAgentService->parse($request->userAgent());
+
+            // Auto-generate device name if not provided
+            $name = $validated['name'] ?? $this->generateDeviceName($userAgentData);
+
+            // Store the passkey
+            $passkey = $action->execute(
+                $request->user(),
+                $validated['passkey'],
+                $validated['options'],
+                $request->getHost(),
+                ['name' => $name]
+            );
+
+            // Update passkey with additional metadata
+            $passkey->update([
+                'user_agent' => $request->userAgent(),
+                'device_name' => $userAgentData['device_name'] ?? null,
+                'device_type' => $userAgentData['device_type'] ?? 'desktop',
+                'browser_name' => $userAgentData['browser_name'] ?? null,
+                'operating_system' => $userAgentData['operating_system'] ?? null,
+                'counter' => 0,
+                'backup_eligible' => false,
+                'backup_state' => false,
+                'transports' => json_decode($validated['passkey'], true)['response']['transports'] ?? null,
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Passkey created successfully',
+                'passkey' => [
+                    'id' => $passkey->id,
+                    'name' => $passkey->name,
+                    'device_name' => $passkey->device_name,
+                    'created_at' => $passkey->created_at->toDateTimeString(),
+                ],
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create passkey: ' . $e->getMessage(),
+            ], 422);
+        }
+    }
+
+    /**
+     * Delete a passkey.
+     */
+    public function destroy(Request $request, Passkey $passkey): JsonResponse
+    {
+        // Ensure the passkey belongs to the authenticated user
+        if ($passkey->authenticatable_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        // Prevent deletion if it's the last authentication method and user has no password
+        $user = $request->user();
+        $hasPassword = ! empty($user->password);
+        $hasOtherPasskeys = $user->passkeys()->where('id', '!=', $passkey->id)->exists();
+        $hasTwoFactor = $user->two_factor_enabled;
+
+        if (! $hasPassword && ! $hasOtherPasskeys && ! $hasTwoFactor) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot delete your last authentication method. Please set a password or add another passkey first.',
+            ], 422);
+        }
+
+        $passkey->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Passkey deleted successfully',
+        ]);
+    }
+
+    /**
+     * Generate a device name from user agent data.
+     */
+    private function generateDeviceName(array $userAgentData): string
+    {
+        $parts = array_filter([
+            $userAgentData['device_name'] ?? null,
+            $userAgentData['browser_name'] ?? null,
+            $userAgentData['operating_system'] ?? null,
+        ]);
+
+        if (empty($parts)) {
+            return 'Unknown Device';
+        }
+
+        return implode(' - ', $parts);
+    }
+}

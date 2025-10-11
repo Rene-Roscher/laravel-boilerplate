@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\PasskeyAuthenticationController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -44,6 +45,18 @@ Route::group([
             'guest:'.config('fortify.guard'),
             $limiter ? 'throttle:'.$limiter : null,
         ]))->name('login.store');
+
+    // Passkey authentication routes
+    Route::get('/passkey/authentication-options', [PasskeyAuthenticationController::class, 'options'])
+        ->middleware(['guest:'.config('fortify.guard')])
+        ->name('passkey.authentication.options');
+
+    Route::post('/passkey/authenticate', [PasskeyAuthenticationController::class, 'authenticate'])
+        ->middleware(array_filter([
+            'guest:'.config('fortify.guard'),
+            $limiter ? 'throttle:'.$limiter : null,
+        ]))
+        ->name('passkey.authenticate');
 
     Route::post(RoutePath::for('logout', '/logout'), [AuthenticatedSessionController::class, 'destroy'])
         ->middleware([config('fortify.auth_middleware', 'auth').':'.config('fortify.guard')])

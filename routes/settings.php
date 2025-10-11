@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Settings\BrowserSessionController;
 use App\Http\Controllers\Settings\OtherBrowserSessionsController;
+use App\Http\Controllers\Settings\PasskeyController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,12 @@ Route::group([
     ])->name('user.two-factor-authentication.edit');
 
     Route::inertia('settings/appearance', 'settings/Appearance')->name('user.appearance.edit');
+
+    // Passkeys management
+    Route::get('settings/passkeys', [PasskeyController::class, 'index'])->name('user.passkeys.index');
+    Route::get('settings/passkeys/generate-options', [PasskeyController::class, 'generateOptions'])->name('user.passkeys.generate-options');
+    Route::post('settings/passkeys', [PasskeyController::class, 'store'])->name('user.passkeys.store');
+    Route::delete('settings/passkeys/{passkey}', [PasskeyController::class, 'destroy'])->name('user.passkeys.destroy');
 
     Route::get('user/browser-sessions', [BrowserSessionController::class, 'index'])
         ->name('user.browser-sessions.index');
