@@ -35,7 +35,7 @@ class PasskeyController extends Controller
                     'operating_system' => $passkey->operating_system,
                     'last_used_at' => $passkey->last_used_at?->toDateTimeString(),
                     'created_at' => $passkey->created_at->toDateTimeString(),
-                    'is_recently_used' => $passkey->last_used_at?->isToday() ?? false,
+                    'is_recently_used' => $passkey->last_used_at?->isAfter(now()->subDays(7)) ?? false,
                 ];
             });
 
@@ -71,7 +71,22 @@ class PasskeyController extends Controller
 
             // Parse user agent data
             $userAgentService = app(UserAgent::class);
-            $userAgentData = $userAgentService->parse($request->userAgent());
+            $userAgentService->setUserAgent($request->userAgent());
+
+            // Get device information
+            $deviceType = 'desktop';
+            if ($userAgentService->isMobile()) {
+                $deviceType = 'mobile';
+            } elseif ($userAgentService->isTablet()) {
+                $deviceType = 'tablet';
+            }
+
+            $userAgentData = [
+                'browser_name' => $userAgentService->browser(),
+                'operating_system' => $userAgentService->platform(),
+                'device_type' => $deviceType,
+                'device_name' => $userAgentService->device(),
+            ];
 
             // Auto-generate device name if not provided
             $name = $validated['name'] ?? $this->generateDeviceName($userAgentData);
