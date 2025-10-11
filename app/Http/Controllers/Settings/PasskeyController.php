@@ -85,7 +85,7 @@ class PasskeyController extends Controller
                 'browser_name' => $userAgentService->browser(),
                 'operating_system' => $userAgentService->platform(),
                 'device_type' => $deviceType,
-                'device_name' => $userAgentService->device(),
+                'device_name' => null, // Device name not available from UserAgent
             ];
 
             // Auto-generate device name if not provided
@@ -171,16 +171,27 @@ class PasskeyController extends Controller
      */
     private function generateDeviceName(array $userAgentData): string
     {
-        $parts = array_filter([
-            $userAgentData['device_name'] ?? null,
-            $userAgentData['browser_name'] ?? null,
-            $userAgentData['operating_system'] ?? null,
-        ]);
+        $parts = [];
+
+        // Add browser name
+        if (!empty($userAgentData['browser_name'])) {
+            $parts[] = $userAgentData['browser_name'];
+        }
+
+        // Add operating system
+        if (!empty($userAgentData['operating_system'])) {
+            $parts[] = 'on ' . $userAgentData['operating_system'];
+        }
+
+        // Add device type if not desktop
+        if (!empty($userAgentData['device_type']) && $userAgentData['device_type'] !== 'desktop') {
+            $parts[] = '(' . ucfirst($userAgentData['device_type']) . ')';
+        }
 
         if (empty($parts)) {
             return 'Unknown Device';
         }
 
-        return implode(' - ', $parts);
+        return implode(' ', $parts);
     }
 }
