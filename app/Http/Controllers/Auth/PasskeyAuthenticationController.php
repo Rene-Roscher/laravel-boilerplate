@@ -7,8 +7,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Laravel\Fortify\Fortify;
-use Spatie\LaravelPasskeys\Actions\AuthenticateUsingPasskeyAction;
+use Spatie\LaravelPasskeys\Actions\FindPasskeyToAuthenticateAction;
 use Spatie\LaravelPasskeys\Actions\GeneratePasskeyAuthenticationOptionsAction;
 use Spatie\LaravelPasskeys\Models\Passkey;
 
@@ -30,7 +31,7 @@ class PasskeyAuthenticationController extends Controller
      */
     public function authenticate(
         Request $request,
-        AuthenticateUsingPasskeyAction $action
+        FindPasskeyToAuthenticateAction $action
     ): JsonResponse {
         $validated = $request->validate([
             'start_authentication_response' => 'required|json',
@@ -40,23 +41,18 @@ class PasskeyAuthenticationController extends Controller
             DB::beginTransaction();
 
             // Attempt to authenticate with the passkey
-            $user = $action->execute($validated['start_authentication_response']);
+            $passkey = $action->execute(
+                $validated['start_authentication_response'],
+                Session::get('passkey-authentication-options')
+            );
 
-            if ($user) {
+            if ($passkey) {
+                $user = $passkey->authenticatable;
                 // Update passkey metadata
-                $passkeyData = json_decode($validated['start_authentication_response'], true);
-                $credentialId = $passkeyData['id'] ?? null;
-
-                if ($credentialId) {
-                    $passkey = Passkey::where('credential_id', $credentialId)->first();
-
-                    if ($passkey) {
-                        $passkey->update([
-                            'last_used_at' => now(),
-                            'counter' => $passkey->counter + 1,
-                        ]);
-                    }
-                }
+                $passkey->update([
+                    'last_used_at' => now(),
+                    'counter' => $passkey->counter + 1,
+                ]);
 
                 // Login the user
                 Auth::login($user);

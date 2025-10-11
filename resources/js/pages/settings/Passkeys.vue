@@ -21,7 +21,7 @@ import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { AlertCircle, Key, LoaderCircle, Monitor, Plus, Smartphone, Tablet, Trash2 } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { getCurrentInstance, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
 interface Props {
@@ -29,6 +29,10 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+// Get translation function from global properties
+const instance = getCurrentInstance();
+const __ = instance?.appContext.config.globalProperties.__ || ((key: string) => key);
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
