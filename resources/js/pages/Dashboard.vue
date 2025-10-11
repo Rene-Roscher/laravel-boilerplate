@@ -5,6 +5,7 @@ import { Head } from '@inertiajs/vue3';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 import {useConfirmationStore} from "@/stores/confirmationStore";
 import {Button} from "@/components/ui/button";
+import { toast } from 'vue-sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -40,14 +41,27 @@ const triggerConfirmation = async () => {
                     <Button variant="destructive" @click="triggerConfirmation">Trigger Confirm Dialog</Button>
                 </div>
                 <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern />
+                    <Button
+                        variant="outline" @click="() => {
+                          toast('Event has been created', {
+                            description: 'Sunday, December 03, 2023 at 9:00 AM',
+                            type: 'success'
+                            // action: {
+                            //   label: 'Undo',
+                            //   onClick: () => console.log('Undo'),
+                            // },
+                          })
+                        }"
+                    >
+                        Add to calendar
+                    </Button>
                 </div>
                 <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern />
+<!--                    <PlaceholderPattern />-->
                 </div>
             </div>
             <div class="relative min-h-screen flex-1 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border md:min-h-min">
-                <PlaceholderPattern />
+<!--                <PlaceholderPattern />-->
             </div>
         </div>
     </AppLayout>
