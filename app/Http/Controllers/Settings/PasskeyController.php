@@ -33,8 +33,8 @@ class PasskeyController extends Controller
                     'device_type' => $passkey->device_type,
                     'browser_name' => $passkey->browser_name,
                     'operating_system' => $passkey->operating_system,
-                    'last_used_at' => $passkey->last_used_at?->toDateTimeString(),
-                    'created_at' => $passkey->created_at->toDateTimeString(),
+                    'last_used_at' => $passkey->last_used_at?->toISOString(),
+                    'created_at' => $passkey->created_at->toISOString(),
                     'is_recently_used' => $passkey->last_used_at?->isAfter(now()->subDays(7)) ?? false,
                 ];
             });
@@ -122,7 +122,7 @@ class PasskeyController extends Controller
                     'id' => $passkey->id,
                     'name' => $passkey->name,
                     'device_name' => $passkey->device_name,
-                    'created_at' => $passkey->created_at->toDateTimeString(),
+                    'created_at' => $passkey->created_at->toISOString(),
                 ],
             ]);
         } catch (\Exception $e) {
