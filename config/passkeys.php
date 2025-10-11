@@ -34,7 +34,7 @@ return [
      * You can override this by specifying your own models
      */
     'models' => [
-        'passkey' => Spatie\LaravelPasskeys\Models\Passkey::class,
+        'passkey' => App\Models\Passkey::class,
         'authenticatable' => env('AUTH_MODEL', App\Models\User::class),
     ],
 ];

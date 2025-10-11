@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Models\Passkey;
 use Laravel\Fortify\Fortify;
 use Spatie\LaravelPasskeys\Actions\FindPasskeyToAuthenticateAction;
 use Spatie\LaravelPasskeys\Actions\GeneratePasskeyAuthenticationOptionsAction;
-use Spatie\LaravelPasskeys\Models\Passkey;
 
 class PasskeyAuthenticationController extends Controller
 {

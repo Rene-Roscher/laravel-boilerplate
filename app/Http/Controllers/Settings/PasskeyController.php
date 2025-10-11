@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Passkey;
 use Spatie\LaravelPasskeys\Actions\GeneratePasskeyRegisterOptionsAction;
 use Spatie\LaravelPasskeys\Actions\StorePasskeyAction;
-use Spatie\LaravelPasskeys\Models\Passkey;
 
 class PasskeyController extends Controller
 {
@@ -140,8 +140,8 @@ class PasskeyController extends Controller
      */
     public function destroy(Request $request, Passkey $passkey): JsonResponse
     {
-        // Ensure the passkey belongs to the authenticated user
-        if ($passkey->authenticatable_id !== $request->user()->id) {
+        // Ensure the passkey belongs to the authenticated user (compare as strings for Snowflake IDs)
+        if ((string) $passkey->authenticatable_id !== (string) $request->user()->id) {
             abort(403);
         }
 

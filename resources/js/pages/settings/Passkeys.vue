@@ -244,7 +244,11 @@ const getDeviceIcon = (deviceType: string | null) => {
                     <DialogHeader>
                         <DialogTitle>{{ __('settings.passkeys.deleteTitle') }}</DialogTitle>
                         <DialogDescription>
-                            {{ __('settings.passkeys.deleteDescription', { name: passkeyToDelete?.name || 'this passkey' }) }}
+                            {{
+                                passkeyToDelete
+                                    ? __('settings.passkeys.deleteDescription').replace('{name}', passkeyToDelete.name)
+                                    : ''
+                            }}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>

@@ -14,7 +14,7 @@ return new class extends Migration
         $authenticatableTableName = (new $authenticatableClass)->getTable();
 
         Schema::create('passkeys', function (Blueprint $table) use ($authenticatableTableName,$authenticatableClass) {
-            $table->id();
+            $table->unsignedBigInteger('id')->primary();
 
             $table
                 ->foreignIdFor($authenticatableClass, 'authenticatable_id')
