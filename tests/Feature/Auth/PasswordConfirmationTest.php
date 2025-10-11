@@ -7,7 +7,12 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 test('confirm password screen can be rendered', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(route('user.password.edit'));
+    $response = $this->actingAs($user)->get(route('password.confirm'));
+
+    // If we get a redirect, follow it to get to the actual page
+    if ($response->status() === 302) {
+        $response = $this->get($response->headers->get('Location'));
+    }
 
     $response->assertStatus(200);
 });
