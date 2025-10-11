@@ -3,18 +3,29 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Models\Passkey;
 use App\Services\UserAgent;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Passkey;
 use Spatie\LaravelPasskeys\Actions\GeneratePasskeyRegisterOptionsAction;
 use Spatie\LaravelPasskeys\Actions\StorePasskeyAction;
 
 class PasskeyController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct()
+    {
+        // Rate limit passkey creation to 5 per minute
+        $this->middleware('throttle:5,1')->only('store');
+        // Rate limit passkey deletion to 10 per minute
+        $this->middleware('throttle:10,1')->only('destroy');
+    }
+
     /**
      * Display the passkeys management page.
      */
@@ -128,9 +139,16 @@ class PasskeyController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
+            // Log the actual error for debugging
+            \Log::error('Failed to create passkey', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'user_id' => $request->user()->id,
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create passkey: ' . $e->getMessage(),
+                'message' => 'Failed to create passkey. Please try again.',
             ], 422);
         }
     }
@@ -174,18 +192,18 @@ class PasskeyController extends Controller
         $parts = [];
 
         // Add browser name
-        if (!empty($userAgentData['browser_name'])) {
+        if (! empty($userAgentData['browser_name'])) {
             $parts[] = $userAgentData['browser_name'];
         }
 
         // Add operating system
-        if (!empty($userAgentData['operating_system'])) {
-            $parts[] = 'on ' . $userAgentData['operating_system'];
+        if (! empty($userAgentData['operating_system'])) {
+            $parts[] = 'on '.$userAgentData['operating_system'];
         }
 
         // Add device type if not desktop
-        if (!empty($userAgentData['device_type']) && $userAgentData['device_type'] !== 'desktop') {
-            $parts[] = '(' . ucfirst($userAgentData['device_type']) . ')';
+        if (! empty($userAgentData['device_type']) && $userAgentData['device_type'] !== 'desktop') {
+            $parts[] = '('.ucfirst($userAgentData['device_type']).')';
         }
 
         if (empty($parts)) {

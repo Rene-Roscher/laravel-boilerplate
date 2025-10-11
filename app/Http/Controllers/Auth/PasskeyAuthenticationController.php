@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Passkey;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use App\Models\Passkey;
 use Laravel\Fortify\Fortify;
 use Spatie\LaravelPasskeys\Actions\FindPasskeyToAuthenticateAction;
 use Spatie\LaravelPasskeys\Actions\GeneratePasskeyAuthenticationOptionsAction;
@@ -76,9 +76,15 @@ class PasskeyAuthenticationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
+            // Log the actual error for debugging
+            \Log::error('Passkey authentication failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => 'Authentication failed: ' . $e->getMessage(),
+                'message' => 'Authentication failed',
             ], 401);
         }
     }
