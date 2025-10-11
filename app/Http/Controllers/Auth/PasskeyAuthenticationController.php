@@ -21,7 +21,8 @@ class PasskeyAuthenticationController extends Controller
     {
         $options = $action->execute();
 
-        return response()->json($options);
+        // The action returns a JSON string, we need to decode it for the response
+        return response()->json(json_decode($options, true));
     }
 
     /**

@@ -239,7 +239,7 @@ const getDeviceIcon = (deviceType: string | null) => {
             <ConfirmationStoreDialog
                 v-model:open="showDeleteDialog"
                 :title="__('settings.passkeys.deleteTitle')"
-                :description="__('settings.passkeys.deleteDescription', { name: passkeyToDelete?.name })"
+                :description="__('settings.passkeys.deleteDescription', { name: passkeyToDelete?.name || '' })"
                 :confirm-text="__('common.delete')"
                 variant="destructive"
                 @confirm="handleDeletePasskey"

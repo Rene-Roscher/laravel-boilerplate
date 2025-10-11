@@ -51,7 +51,8 @@ class PasskeyController extends Controller
     {
         $options = $action->execute($request->user());
 
-        return response()->json($options);
+        // The action returns a JSON string, we need to decode it for the response
+        return response()->json(json_decode($options, true));
     }
 
     /**
