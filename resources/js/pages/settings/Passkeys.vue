@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ConfirmationStoreDialog from '@/components/ConfirmationStoreDialog.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -229,7 +228,7 @@ const getDeviceIcon = (deviceType: string | null) => {
                     </div>
                     <DialogFooter>
                         <Button variant="outline" @click="showCreateDialog = false" :disabled="isRegistering">
-                            {{ __('common.cancel') }}
+                            Cancel
                         </Button>
                         <Button @click="handleCreatePasskey" :disabled="isRegistering">
                             <LoaderCircle v-if="isRegistering" class="mr-2 h-4 w-4 animate-spin" />
@@ -240,15 +239,25 @@ const getDeviceIcon = (deviceType: string | null) => {
             </Dialog>
 
             <!-- Delete confirmation dialog -->
-            <ConfirmationStoreDialog
-                v-model:open="showDeleteDialog"
-                :title="__('settings.passkeys.deleteTitle')"
-                :description="__('settings.passkeys.deleteDescription', { name: passkeyToDelete?.name || '' })"
-                :confirm-text="__('common.delete')"
-                variant="destructive"
-                @confirm="handleDeletePasskey"
-                :loading="isDeleting"
-            />
+            <Dialog v-model:open="showDeleteDialog">
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>{{ __('settings.passkeys.deleteTitle') }}</DialogTitle>
+                        <DialogDescription>
+                            {{ __('settings.passkeys.deleteDescription', { name: passkeyToDelete?.name || 'this passkey' }) }}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button variant="outline" @click="showDeleteDialog = false" :disabled="isDeleting">
+                            Cancel
+                        </Button>
+                        <Button variant="destructive" @click="handleDeletePasskey" :disabled="isDeleting">
+                            <LoaderCircle v-if="isDeleting" class="mr-2 h-4 w-4 animate-spin" />
+                            Delete
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </SettingsLayout>
     </AppLayout>
 </template>
