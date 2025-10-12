@@ -19,6 +19,7 @@ use Illuminate\Notifications\Notifiable;
 use Kra8\Snowflake\HasShortflakePrimary;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
 use Spatie\LaravelPasskeys\Models\Concerns\InteractsWithPasskeys;
 use Spatie\Permission\Traits\HasRoles;
@@ -28,15 +29,17 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable implements HasPasskeys, MustVerifyEmail
 {
+    use HasApiTokens;
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    use HasShortflakePrimary, HasShortIdentifier;
-    use TwoFactorAuthenticatable;
-    use HasRoles;
     use HasMedia;
     use HasOrganizations;
+    use HasRoles;
+    use HasShortflakePrimary, HasShortIdentifier;
     use InteractsWithPasskeys;
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -70,7 +73,7 @@ class User extends Authenticatable implements HasPasskeys, MustVerifyEmail
     ];
 
     protected $with = [
-        'currentOrganization', 'organizations'
+        'currentOrganization', 'organizations',
     ];
 
     protected array $mediaFields = [
@@ -150,9 +153,9 @@ class User extends Authenticatable implements HasPasskeys, MustVerifyEmail
                         <path fill="#00e091" d="M107.13,27.12l-7.08,28.71a1,1,0,0,1-1.93,0l-1.59-6.41a1,1,0,0,0-1-.75H84.44a1,1,0,0,0-1,1.28l6.93,23a1,1,0,0,0,1,.71h15.07a1,1,0,0,0,1-.71l13.79-45.32a1,1,0,0,0-1-1.28H108.09A1,1,0,0,0,107.13,27.12Z" transform="translate(-83.45 -26.36)"/>
                     </svg>';
 
-        return $svgPrefix .
-            '<g id="qrCode">' . $svgContent . '</g>' .
-            '<g id="logoLayer">' . $bgLayer . $logoSvg . '</g>' .
+        return $svgPrefix.
+            '<g id="qrCode">'.$svgContent.'</g>'.
+            '<g id="logoLayer">'.$bgLayer.$logoSvg.'</g>'.
             '</svg>';
     }
 }
