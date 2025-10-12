@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Settings\ApiTokenController;
 use App\Http\Controllers\Settings\BrowserSessionController;
 use App\Http\Controllers\Settings\OtherBrowserSessionsController;
 use App\Http\Controllers\Settings\PasskeyController;
@@ -10,7 +11,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
-    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'auth' ]
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'auth'],
 ], function () {
     Route::redirect('settings', '/settings/profile')->name('settings');
 
@@ -35,6 +36,12 @@ Route::group([
     Route::get('settings/passkeys/generate-options', [PasskeyController::class, 'generateOptions'])->name('user.passkeys.generate-options');
     Route::post('settings/passkeys', [PasskeyController::class, 'store'])->name('user.passkeys.store');
     Route::delete('settings/passkeys/{passkey}', [PasskeyController::class, 'destroy'])->name('user.passkeys.destroy');
+
+    // API Token management
+    Route::get('settings/api-tokens', [ApiTokenController::class, 'index'])->name('user.api-tokens.index');
+    Route::post('settings/api-tokens', [ApiTokenController::class, 'store'])->name('user.api-tokens.store');
+    Route::delete('settings/api-tokens/{tokenId}', [ApiTokenController::class, 'destroy'])->name('user.api-tokens.destroy');
+    Route::delete('settings/api-tokens', [ApiTokenController::class, 'destroyAll'])->name('user.api-tokens.destroy-all');
 
     Route::get('user/browser-sessions', [BrowserSessionController::class, 'index'])
         ->name('user.browser-sessions.index');

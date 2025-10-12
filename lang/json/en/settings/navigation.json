@@ -3,6 +3,7 @@
     "sidebar.password": "Password",
     "sidebar.appearance": "Appearance",
     "sidebar.passkeys": "Passkeys",
+    "sidebar.apiTokens": "API Tokens",
     "sidebar.twoFactorAuthentication": "Two-Factor Authentication",
     "sidebar.browserSessions": "Browser Sessions",
 
@@ -10,6 +11,7 @@
     "breadcrumb.password": "Password settings",
     "breadcrumb.appearance": "Appearance settings",
     "breadcrumb.passkeys": "Passkeys",
+    "breadcrumb.apiTokens": "API Tokens",
     "breadcrumb.twoFactorAuthentication": "Two-Factor Authentication",
     "breadcrumb.browserSessions": "Browser sessions"
 }
