@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/home/rene/.pvm/php-8.3.10/bin/php",
+            "args": [
+                "/home/rene/PhpstormProjects/laravel-12-boilerplate/artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}
