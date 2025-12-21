@@ -8,6 +8,7 @@ use App\Models\Organization\Organization;
 use App\Models\User;
 use App\Notifications\Organization\OrganizationInvitationNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -27,23 +28,39 @@ class OrganizationUserController extends Controller
             'users' => $organization->users,
             'roles' => OrganizationRoleEnum::all(),
             'invitations' => $organization->invitations,
-            'canAddMember' => auth()->user()->can('add-organization-member', $organization),
+            'canAddMember' => auth()->user()->can('addOrganizationMember', $organization),
         ]);
     }
 
     public function inviteUser(Organization $organization, Request $request)
     {
-        $this->authorize('add-organization-member', $organization);
+        $this->authorize('addOrganizationMember', $organization);
+
+        // Rate limiting: max 10 invitations per hour per organization
+        $key = 'org-invite:'.$organization->id;
+        if (RateLimiter::tooManyAttempts($key, 10)) {
+            $seconds = RateLimiter::availableIn($key);
+            abort(429, __('organization.too_many_invitations', ['seconds' => $seconds]));
+        }
+        RateLimiter::hit($key, 3600); // 1 hour
 
         $request->validate([
             'email' => [
                 'string',
                 'email',
-                function ($attribute, $value, $fail) use ($organization) {
-                    if ($organization->users()->where('email', $value)->exists()) {
+                function ($attribute, $value, $fail) use ($organization, $request) {
+                    // Cannot invite yourself
+                    if (strtolower($value) === strtolower($request->user()->email)) {
+                        return $fail(__('organization.cannot_invite_self'));
+                    }
+
+                    // Check if user already exists in organization (including owner)
+                    if ($organization->users()->where('email', $value)->exists() ||
+                        (strtolower($organization->owner->email) === strtolower($value))) {
                         return $fail(__('organization.user_exists'));
                     }
 
+                    // Check for existing invitations
                     if ($organization->invitations()->where('email', $value)->exists()) {
                         return $fail(__('organization.invitation_exists'));
                     }
@@ -64,7 +81,7 @@ class OrganizationUserController extends Controller
 
     public function deleteInvitation(Organization $organization, Request $request)
     {
-        $this->authorize('remove-organization-member', $organization);
+        $this->authorize('removeOrganizationMember', $organization);
 
         $request->validate([
             'invitation_id' => [
@@ -81,8 +98,6 @@ class OrganizationUserController extends Controller
 
     public function detachUser(Organization $organization, Request $request)
     {
-        $this->authorize('remove-organization-member', $organization);
-
         $request->validate([
             'user_id' => [
                 'required',
@@ -92,6 +107,13 @@ class OrganizationUserController extends Controller
         ]);
 
         $userId = $request->user_id;
+        $targetUser = User::findOrFail($userId);
+
+        // Check if user can remove this specific member
+        $policy = new \App\Policies\OrganizationPolicy;
+        if (! $policy->canRemoveSpecificMember($request->user(), $organization, $targetUser)) {
+            abort(403, 'Unauthorized to remove this member');
+        }
 
         $organization->users()->detach($userId);
 
@@ -107,7 +129,7 @@ class OrganizationUserController extends Controller
 
     public function updateUser(Organization $organization, Request $request)
     {
-        $this->authorize('update-organization-member', $organization);
+        $this->authorize('updateOrganizationMember', $organization);
 
         $request->validate([
             'user_id' => [
@@ -121,11 +143,20 @@ class OrganizationUserController extends Controller
             ],
         ]);
 
+        // Ensure that the user is not trying to change their own role
+        if (
+            $request->user_id === $request->user()->id &&
+            auth()->user()->organizationRole($organization)['id'] !== $request->get('role')
+        ) {
+            return back()->withErrors([
+                'role' => __('organization.cannot_change_own_role'),
+            ]);
+        }
+
         $organization->users()->updateExistingPivot($request->user_id, [
             'role' => $request->role,
         ]);
 
         return back();
     }
-
 }

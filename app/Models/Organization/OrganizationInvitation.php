@@ -19,6 +19,18 @@ class OrganizationInvitation extends BaseModel
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'id' => 'string',
+        'organization_id' => 'string',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    /**
      * Get the organization that owns the invitation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

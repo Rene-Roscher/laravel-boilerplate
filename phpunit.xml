@@ -29,5 +29,7 @@
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="LARAVELLOCALIZATION_SUPPORTED_LOCALES" value="en"/>
+        <env name="LARAVELLOCALIZATION_DEFAULT_LOCALE" value="en"/>
     </php>
 </phpunit>

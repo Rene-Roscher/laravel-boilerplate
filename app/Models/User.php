@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasMedia;
 use App\Models\Traits\HasOrganizations;
-use App\Models\Traits\HasShortableUuid;
+use App\Models\Traits\HasShortIdentifier;
 use BaconQrCode\Renderer\Color\Rgb;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -13,27 +13,33 @@ use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Kra8\Snowflake\HasShortflakePrimary;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
+use Spatie\LaravelPasskeys\Models\Concerns\InteractsWithPasskeys;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @mixin IdeHelperUser
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements HasPasskeys, MustVerifyEmail
 {
+    use HasApiTokens;
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    use HasUuids, HasShortableUuid;
-    use TwoFactorAuthenticatable;
-    use HasRoles;
     use HasMedia;
     use HasOrganizations;
+    use HasRoles;
+    use HasShortflakePrimary, HasShortIdentifier;
+    use InteractsWithPasskeys;
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -67,7 +73,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $with = [
-        'currentOrganization', 'organizations'
+        'currentOrganization', 'organizations',
     ];
 
     protected array $mediaFields = [
@@ -84,6 +90,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
+            'id' => 'string',
+            'current_organization_id' => 'string',
             'email_verified_at' => 'datetime',
             'two_factor_confirmed_at' => 'datetime',
             'password' => 'hashed',
@@ -145,9 +153,9 @@ class User extends Authenticatable implements MustVerifyEmail
                         <path fill="#00e091" d="M107.13,27.12l-7.08,28.71a1,1,0,0,1-1.93,0l-1.59-6.41a1,1,0,0,0-1-.75H84.44a1,1,0,0,0-1,1.28l6.93,23a1,1,0,0,0,1,.71h15.07a1,1,0,0,0,1-.71l13.79-45.32a1,1,0,0,0-1-1.28H108.09A1,1,0,0,0,107.13,27.12Z" transform="translate(-83.45 -26.36)"/>
                     </svg>';
 
-        return $svgPrefix .
-            '<g id="qrCode">' . $svgContent . '</g>' .
-            '<g id="logoLayer">' . $bgLayer . $logoSvg . '</g>' .
+        return $svgPrefix.
+            '<g id="qrCode">'.$svgContent.'</g>'.
+            '<g id="logoLayer">'.$bgLayer.$logoSvg.'</g>'.
             '</svg>';
     }
 }

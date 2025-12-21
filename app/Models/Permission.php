@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Kra8\Snowflake\HasShortflakePrimary;
 use Spatie\Permission\Models\Permission as SpatiePermission;
 
 /**
@@ -10,5 +10,5 @@ use Spatie\Permission\Models\Permission as SpatiePermission;
  */
 class Permission extends SpatiePermission
 {
-    use HasUuids;
+    use HasShortflakePrimary;
 }

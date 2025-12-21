@@ -3,6 +3,8 @@ import AppLayout from '@/layouts/app/AppSidebarLayout.vue';
 import type { BreadcrumbItemType } from '@/types';
 import ConfirmationStoreDialog from "@/components/ConfirmationStoreDialog.vue";
 import CreateOrganizationDialog from "@/components/organization/CreateOrganizationDialog.vue";
+import { Toaster } from '@/components/ui/sonner'
+import 'vue-sonner/style.css'
 
 interface Props {
     breadcrumbs?: BreadcrumbItemType[];
@@ -14,6 +16,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
+    <Toaster />
     <AppLayout :breadcrumbs="breadcrumbs">
         <slot />
     </AppLayout>

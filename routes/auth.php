@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\PasskeyAuthenticationController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -44,6 +45,18 @@ Route::group([
             'guest:'.config('fortify.guard'),
             $limiter ? 'throttle:'.$limiter : null,
         ]))->name('login.store');
+
+    // Passkey authentication routes
+    Route::get('/passkey/authentication-options', [PasskeyAuthenticationController::class, 'options'])
+        ->middleware(['guest:'.config('fortify.guard')])
+        ->name('passkey.authentication.options');
+
+    Route::post('/passkey/authenticate', [PasskeyAuthenticationController::class, 'authenticate'])
+        ->middleware(array_filter([
+            'guest:'.config('fortify.guard'),
+            $limiter ? 'throttle:'.$limiter : null,
+        ]))
+        ->name('passkey.authenticate');
 
     Route::post(RoutePath::for('logout', '/logout'), [AuthenticatedSessionController::class, 'destroy'])
         ->middleware([config('fortify.auth_middleware', 'auth').':'.config('fortify.guard')])
@@ -175,51 +188,3 @@ Route::group([
             ->middleware($twoFactorMiddleware);
     }
 });
-
-//Route::group([
-//    'prefix' => LaravelLocalization::setLocale(),
-//    'middleware' => config('fortify.middleware')
-//], function () {
-//    // Authentication...
-//    Route::get(RoutePath::for('login', '/login'), [AuthenticatedSessionController::class, 'create'])
-//        ->middleware(['guest:'.config('fortify.guard')])
-//        ->name('login');
-//
-//    // Password Reset...
-//    if (Features::enabled(Features::resetPasswords())) {
-//        Route::get(RoutePath::for('password.request', '/forgot-password'), [PasswordResetLinkController::class, 'create'])
-//            ->middleware(['guest:'.config('fortify.guard')])
-//            ->name('password.request');
-//
-//        Route::get(RoutePath::for('password.reset', '/reset-password/{token}'), [NewPasswordController::class, 'create'])
-//            ->middleware(['guest:'.config('fortify.guard')])
-//            ->name('password.reset');
-//    }
-//
-//    // Registration...
-//    if (Features::enabled(Features::registration())) {
-//        Route::get(RoutePath::for('register', '/register'), [RegisteredUserController::class, 'create'])
-//            ->middleware(['guest:'.config('fortify.guard')])
-//            ->name('register');
-//    }
-//
-//    // Email Verification...
-//    if (Features::enabled(Features::emailVerification())) {
-//        Route::get(RoutePath::for('verification.notice', '/email/verify'), [EmailVerificationPromptController::class, '__invoke'])
-//            ->middleware([config('fortify.auth_middleware', 'auth').':'.config('fortify.guard')])
-//            ->name('verification.notice');
-//    }
-//
-//    // Password Confirmation...
-//    Route::get(RoutePath::for('password.confirm', '/user/confirm-password'), [ConfirmablePasswordController::class, 'show'])
-//        ->middleware([config('fortify.auth_middleware', 'auth').':'.config('fortify.guard')])
-//        ->name('password.confirm');
-//
-//    // Two-Factor Authentication...
-//    if (Features::enabled(Features::twoFactorAuthentication())) {
-//        Route::get(RoutePath::for('two-factor.login', '/two-factor-challenge'), [TwoFactorAuthenticatedSessionController::class, 'create'])
-//            ->middleware(['guest:'.config('fortify.guard')])
-//            ->name('two-factor.login');
-//    }
-//});
-
